@@ -9,7 +9,9 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.inft.awm.custom.PassToken;
 import com.inft.awm.custom.UserLoginToken;
 import com.inft.awm.domain.Customer;
+import com.inft.awm.domain.Employee;
 import com.inft.awm.service.CustomerService;
+import com.inft.awm.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -24,6 +26,8 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 
     @Autowired
     CustomerService customerService;
+    @Autowired
+    EmployeeService employeeService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -53,23 +57,46 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                     throw new RuntimeException("无token，请重新登录");
                 }
                 // 获取 token 中的 user id
-                String customerId;
+                String type;
+                String id;
                 try {
-                    customerId = JWT.decode(token).getAudience().get(0);
+                    type = JWT.decode(token).getIssuer();
                 } catch (JWTDecodeException j) {
-                    throw new RuntimeException("401");
+                    throw new RuntimeException("Can not get user type");
                 }
-                Customer customer = customerService.findCustomerById(Integer.valueOf(customerId));
-                if (customer == null) {
-                    throw new RuntimeException("用户不存在，请重新登录");
-                }
-                // 验证 token
-                JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(customer.getPassword())).build();
+
                 try {
-                    jwtVerifier.verify(token);
-                } catch (JWTVerificationException e) {
-                    throw new RuntimeException("401");
+                    id = JWT.decode(token).getAudience().get(0);
+                    if ("customer".equals(type)) {
+                        Customer customer = customerService.findCustomerById(Integer.valueOf(id));
+                        if (customer == null) {
+                            throw new RuntimeException("用户不存在，请重新登录");
+                        }
+                        // 验证 token
+                        JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(customer.getPassword())).build();
+                        try {
+                            jwtVerifier.verify(token);
+                        } catch (JWTVerificationException e) {
+                            throw new RuntimeException("customer verify token failed");
+                        }
+                    } else {
+                        Employee employee = employeeService.findEmployeeById(Integer.valueOf(id));
+                        if (employee == null) {
+                            throw new RuntimeException("员工不存在不存在，请重新登录");
+                        }
+                        // 验证 token
+                        JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(employee.getPassword())).build();
+                        try {
+                            jwtVerifier.verify(token);
+                        } catch (JWTVerificationException e) {
+                            throw new RuntimeException("employee verify token failed");
+                        }
+                    }
+                } catch (JWTDecodeException j) {
+                    throw new RuntimeException("Can not get user type");
                 }
+
+
                 return true;
             }
         }

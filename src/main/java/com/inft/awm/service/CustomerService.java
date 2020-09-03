@@ -34,7 +34,7 @@ public class CustomerService {
             if (!loginCustomer.getPassword().equals(existCustomer.getPassword())) {
                 throw new RuntimeException("The password is wrong");
             } else {
-                String token = TokenUtils.getToken(existCustomer);
+                String token = TokenUtils.createCustomerToken(existCustomer);
                 return new ResponseLogin(token);
             }
         }
