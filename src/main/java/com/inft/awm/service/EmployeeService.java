@@ -1,18 +1,26 @@
 package com.inft.awm.service;
 
 
+import com.inft.awm.domain.Attendance;
 import com.inft.awm.domain.Employee;
+import com.inft.awm.repository.AttendanceRepository;
 import com.inft.awm.repository.EmployeeRepository;
 import com.inft.awm.response.ResponseLogin;
 import com.inft.awm.token.TokenUtils;
+import com.inft.awm.utils.TimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.sql.Time;
 
 @Service
 public class EmployeeService {
 
     @Autowired
     EmployeeRepository employeeRepository;
+
+    @Autowired
+    AttendanceRepository attendanceRepository;
 
     public void register(Employee employee) {
         Employee existCustomer = employeeRepository.findByEmployeeName(employee.getUserName());
@@ -47,5 +55,17 @@ public class EmployeeService {
 
     public Employee findEmployeeById(Integer customerId) {
         return employeeRepository.findByEmployeeId(customerId);
+    }
+
+    public void clock(String employee_id) {
+        String currentDate = TimeUtils.getCurrentDate();
+        Attendance attendanceById = attendanceRepository.findAttendanceById(Integer.valueOf(employee_id), currentDate);
+        System.out.println(attendanceById);
+        if (attendanceById ==null) {
+            attendanceById = new Attendance(Integer.valueOf(employee_id),currentDate, TimeUtils.getCurrentTime());
+        } else {
+            attendanceById.setOff_time(TimeUtils.getCurrentTime());
+        }
+        attendanceRepository.save(attendanceById);
     }
 }

@@ -92,6 +92,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                             throw new RuntimeException("employee verify token failed");
                         }
                     }
+                    request.setAttribute("id",id);
                 } catch (JWTDecodeException j) {
                     throw new RuntimeException("Can not get user type");
                 }

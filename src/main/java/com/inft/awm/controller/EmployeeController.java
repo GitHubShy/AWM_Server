@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping("/employee")
 public class EmployeeController {
@@ -32,5 +34,13 @@ public class EmployeeController {
     @PostMapping(value = "/login")
     public ResponseLogin login(Employee employee) {
         return employeeService.login(employee);
+    }
+
+    @PostMapping(value = "/clock")
+    @UserLoginToken
+    public SimpleResult clock(HttpServletRequest httpServletRequest) {
+        String id = (String) httpServletRequest.getAttribute("id");
+        employeeService.clock(id);
+        return new SimpleResult("Success");
     }
 }
