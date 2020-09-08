@@ -1,6 +1,6 @@
 package com.inft.awm.controller;
 
-import com.inft.awm.custom.UserLoginToken;
+import com.inft.awm.custom.NeedToken;
 import com.inft.awm.domain.Customer;
 import com.inft.awm.response.ResponseLogin;
 import com.inft.awm.response.SimpleResult;
@@ -17,7 +17,7 @@ public class CustomerController {
     private CustomerService customerService;
 
     @PostMapping(value = "/getAllCustomers")
-    @UserLoginToken
+    @NeedToken
     public Iterable<Customer> getAllCustomer() {
         return customerService.getAllCustomers();
     }

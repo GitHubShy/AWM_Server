@@ -6,8 +6,8 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 
-import com.inft.awm.custom.PassToken;
-import com.inft.awm.custom.UserLoginToken;
+import com.inft.awm.custom.NoNeedToken;
+import com.inft.awm.custom.NeedToken;
 import com.inft.awm.domain.Customer;
 import com.inft.awm.domain.Employee;
 import com.inft.awm.service.CustomerService;
@@ -42,19 +42,19 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         Method method=handlerMethod.getMethod();
 
         //检查是否有passtoken注释，有则跳过认证
-        if (method.isAnnotationPresent(PassToken.class)) {
-            PassToken passToken = method.getAnnotation(PassToken.class);
+        if (method.isAnnotationPresent(NoNeedToken.class)) {
+            NoNeedToken passToken = method.getAnnotation(NoNeedToken.class);
             if (passToken.required()) {
                 return true;
             }
         }
         //检查有没有需要用户权限的注解
-        if (method.isAnnotationPresent(UserLoginToken.class)) {
-            UserLoginToken userLoginToken = method.getAnnotation(UserLoginToken.class);
+        if (method.isAnnotationPresent(NeedToken.class)) {
+            NeedToken userLoginToken = method.getAnnotation(NeedToken.class);
             if (userLoginToken.required()) {
                 // 执行认证
                 if (token == null) {
-                    throw new RuntimeException("无token，请重新登录");
+                    throw new RuntimeException("There is no token, please login");
                 }
                 // 获取 token 中的 user id
                 String type;
@@ -70,7 +70,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                     if ("customer".equals(type)) {
                         Customer customer = customerService.findCustomerById(Integer.valueOf(id));
                         if (customer == null) {
-                            throw new RuntimeException("用户不存在，请重新登录");
+                            throw new RuntimeException("The user does not exist，please register");
                         }
                         // 验证 token
                         JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(customer.getPassword())).build();
@@ -82,7 +82,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                     } else {
                         Employee employee = employeeService.findEmployeeById(Integer.valueOf(id));
                         if (employee == null) {
-                            throw new RuntimeException("员工不存在不存在，请重新登录");
+                            throw new RuntimeException("he employee does not exist，please register");
                         }
                         // 验证 token
                         JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(employee.getPassword())).build();

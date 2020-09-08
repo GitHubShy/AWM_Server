@@ -1,7 +1,6 @@
 package com.inft.awm.controller;
 
-import com.inft.awm.custom.UserLoginToken;
-import com.inft.awm.domain.Customer;
+import com.inft.awm.custom.NeedToken;
 import com.inft.awm.domain.Employee;
 import com.inft.awm.response.ResponseLogin;
 import com.inft.awm.response.SimpleResult;
@@ -20,7 +19,7 @@ public class EmployeeController {
     private EmployeeService employeeService;
 
     @PostMapping(value = "/getAllEmployee")
-    @UserLoginToken
+    @NeedToken
     public Iterable<Employee> getAllCustomer() {
         return employeeService.getAllEmployees();
     }
@@ -37,7 +36,7 @@ public class EmployeeController {
     }
 
     @PostMapping(value = "/clock")
-    @UserLoginToken
+    @NeedToken
     public SimpleResult clock(HttpServletRequest httpServletRequest) {
         String id = (String) httpServletRequest.getAttribute("id");
         employeeService.clock(id);
