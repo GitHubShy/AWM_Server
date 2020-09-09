@@ -11,8 +11,6 @@ import com.inft.awm.utils.TimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Time;
-
 @Service
 public class EmployeeService {
 
@@ -23,7 +21,7 @@ public class EmployeeService {
     AttendanceRepository attendanceRepository;
 
     public void register(Employee employee) {
-        Employee existCustomer = employeeRepository.findByEmployeeName(employee.getUserName());
+        Employee existCustomer = employeeRepository.findByEmployeeName(employee.getUser_name());
 
         if (existCustomer != null) {
             throw new RuntimeException("The employee name has already been exist");
@@ -34,7 +32,7 @@ public class EmployeeService {
 
     public ResponseLogin login(Employee loginEmployee) {
 
-        Employee existCustomer = employeeRepository.findByEmployeeName(loginEmployee.getUserName());
+        Employee existCustomer = employeeRepository.findByEmployeeName(loginEmployee.getUser_name());
 
         if (existCustomer == null) {
             throw new RuntimeException("The employee dos not exist");

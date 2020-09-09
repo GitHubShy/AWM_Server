@@ -28,11 +28,11 @@ public class Customer {
     @Email(message = "The email address format is incorrect")
     private String email;
 
-    private int gender;
+    private Integer gender;
 
-    private int phone;
+    private Long phone;
 
-    private int birth_year;
+    private Integer birth_year;
 
     public Integer getCustomer_id() {
         return customer_id;
@@ -82,27 +82,27 @@ public class Customer {
         this.email = email;
     }
 
-    public int getGender() {
+    public Integer getGender() {
         return gender;
     }
 
-    public void setGender(int gender) {
+    public void setGender(Integer gender) {
         this.gender = gender;
     }
 
-    public int getPhone() {
+    public Long getPhone() {
         return phone;
     }
 
-    public void setPhone(int phone) {
+    public void setPhone(Long phone) {
         this.phone = phone;
     }
 
-    public int getBirth_year() {
+    public Integer getBirth_year() {
         return birth_year;
     }
 
-    public void setBirth_year(int birth_year) {
+    public void setBirth_year(Integer birth_year) {
         this.birth_year = birth_year;
     }
 }

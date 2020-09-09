@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table
@@ -16,25 +17,39 @@ public class Employee {
 
     @NotBlank(message = "The user name cannot be empty")
     @Length(min = 2, max = 50, message = "The length must be between 2 and 50")
-    private String userName;
+    private String user_name;
 
     @NotBlank(message = "The password cannot be empty")
     private String password;
 
-    private String firstName;
+    private String first_name;
 
     private String surname;
 
     @Email(message = "The email address format is incorrect")
     private String email;
 
-    private int gender;
+    private Integer gender;
 
-    private int phone;
+    private Long phone;
 
-    private int birth_year;
+    private Integer birth_year;
 
-    private int title;
+    private Integer title;
+
+    @NotNull(message = "The TFN cannot be empty")
+    private Long tax_file_number;
+
+    @NotNull(message = "The payment rate cannot be empty")
+    private Float payment_rate;
+
+    public Float getPayment_rate() {
+        return payment_rate;
+    }
+
+    public void setPayment_rate(Float payment_rate) {
+        this.payment_rate = payment_rate;
+    }
 
     public Integer getId() {
         return id;
@@ -44,12 +59,12 @@ public class Employee {
         this.id = customer_id;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUser_name() {
+        return user_name;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUser_name(String user_name) {
+        this.user_name = user_name;
     }
 
     public String getPassword() {
@@ -60,12 +75,12 @@ public class Employee {
         this.password = password;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getFirst_name() {
+        return first_name;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setFirst_name(String first_name) {
+        this.first_name = first_name;
     }
 
     public String getSurname() {
@@ -84,27 +99,35 @@ public class Employee {
         this.email = email;
     }
 
-    public int getGender() {
+    public Integer getGender() {
         return gender;
     }
 
-    public void setGender(int gender) {
+    public void setGender(Integer gender) {
         this.gender = gender;
     }
 
-    public int getPhone() {
+    public Long getPhone() {
         return phone;
     }
 
-    public void setPhone(int phone) {
+    public void setPhone(Long phone) {
         this.phone = phone;
     }
 
-    public int getBirth_year() {
+    public Integer getBirth_year() {
         return birth_year;
     }
 
-    public void setBirth_year(int birth_year) {
+    public void setBirth_year(Integer birth_year) {
         this.birth_year = birth_year;
+    }
+
+    public Long getTax_file_number() {
+        return tax_file_number;
+    }
+
+    public void setTax_file_number(Long tax_file_number) {
+        this.tax_file_number = tax_file_number;
     }
 }
