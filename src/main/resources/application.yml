@@ -1,8 +1,11 @@
+server:
+  port: 8080
+
 spring:
   datasource:
     name: test
-    url: jdbc:mysql://localhost:3306/test?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8
+    url: jdbc:mysql://47.104.167.88:3306/test?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8
     username: root
-    password: 007shiyao
+    password: 12345678
     driver-class-name: com.mysql.jdbc.Driver
 
