@@ -16,12 +16,12 @@ public class Customer {
 
     @NotBlank(message = "The user name cannot be empty")
     @Length(min = 2, max = 50, message = "The length must be between 2 and 50")
-    private String userName;
+    private String user_name;
 
     @NotBlank(message = "The password cannot be empty")
     private String password;
 
-    private String firstName;
+    private String first_name;
 
     private String surname;
 
@@ -42,12 +42,12 @@ public class Customer {
         this.customer_id = customer_id;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUser_name() {
+        return user_name;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUser_name(String user_name) {
+        this.user_name = user_name;
     }
 
     public String getPassword() {
@@ -58,12 +58,12 @@ public class Customer {
         this.password = password;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getFirst_name() {
+        return first_name;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setFirst_name(String first_name) {
+        this.first_name = first_name;
     }
 
     public String getSurname() {

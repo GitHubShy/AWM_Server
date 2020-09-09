@@ -15,7 +15,7 @@ public class CustomerService {
     CustomerRepository customerRepository;
 
     public void register(Customer customer) {
-        Customer existCustomer = customerRepository.findByUserName(customer.getUserName());
+        Customer existCustomer = customerRepository.findByUserName(customer.getUser_name());
 
         if (existCustomer != null) {
             throw new RuntimeException("The customer name has already been exist");
@@ -26,7 +26,7 @@ public class CustomerService {
 
     public ResponseLogin login(Customer loginCustomer) {
 
-        Customer existCustomer = customerRepository.findByUserName(loginCustomer.getUserName());
+        Customer existCustomer = customerRepository.findByUserName(loginCustomer.getUser_name());
 
         if (existCustomer == null) {
             throw new RuntimeException("The customer dos not exist");
