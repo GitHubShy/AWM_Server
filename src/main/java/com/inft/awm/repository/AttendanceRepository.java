@@ -13,4 +13,8 @@ public interface AttendanceRepository extends CrudRepository<Attendance,Integer>
 
     @Query(value = "select * from attendance where employee_id = ?1 and date = ?2",nativeQuery = true)
     Attendance findAttendanceById(@Param("employee_id") Integer id,@Param("date") String date);
+
+    @Query(value = "select * from attendance where employee_id = ?1",nativeQuery = true)
+    Iterable<Attendance> findAttendanceById(@Param("employee_id") Integer id);
+
 }

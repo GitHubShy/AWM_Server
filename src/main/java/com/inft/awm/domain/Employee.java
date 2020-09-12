@@ -22,26 +22,27 @@ public class Employee {
     @NotBlank(message = "The password cannot be empty")
     private String password;
 
-    private String first_name;
-
-    private String surname;
-
     @Email(message = "The email address format is incorrect")
     private String email;
-
-    private Integer gender;
-
-    private Long phone;
-
-    private Integer birth_year;
-
-    private Integer title;
 
     @NotNull(message = "The TFN cannot be empty")
     private Long tax_file_number;
 
     @NotNull(message = "The payment rate cannot be empty")
     private Float payment_rate;
+
+    @NotNull(message = "The payment rate cannot be empty")
+    private Long phone;
+
+    private String first_name;
+
+    private String surname;
+
+    private Integer gender;
+
+    private Integer birth_year;
+
+    private Integer title;
 
     public Float getPayment_rate() {
         return payment_rate;
