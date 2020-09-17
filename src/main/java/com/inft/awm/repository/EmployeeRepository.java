@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface EmployeeRepository extends CrudRepository<Employee,Integer> {
 
-    @Query(value = "select * from employee where user_name = ?1",nativeQuery = true)
+    @Query(value = "select * from employee where account_name = ?1",nativeQuery = true)
     Employee findByEmployeeName(@Param("name") String userName);
 
     @Query(value = "select * from employee where id = ?1",nativeQuery = true)

@@ -26,7 +26,7 @@ public class EmployeeService {
     AttendanceRepository attendanceRepository;
 
     public void register(Employee employee) {
-        Employee existCustomer = employeeRepository.findByEmployeeName(employee.getUser_name());
+        Employee existCustomer = employeeRepository.findByEmployeeName(employee.getAccount_name());
 
         if (existCustomer != null) {
             throw new RuntimeException("The employee name has already been exist");
@@ -35,14 +35,14 @@ public class EmployeeService {
         employeeRepository.save(employee);
     }
 
-    public ResponseLogin login(Employee loginEmployee) {
+    public ResponseLogin login(String account_name, String password) {
 
-        Employee existCustomer = employeeRepository.findByEmployeeName(loginEmployee.getUser_name());
+        Employee existCustomer = employeeRepository.findByEmployeeName(account_name);
 
         if (existCustomer == null) {
             throw new RuntimeException("The employee dos not exist");
         } else {
-            if (!loginEmployee.getPassword().equals(existCustomer.getPassword())) {
+            if (!password.equals(existCustomer.getPassword())) {
                 throw new RuntimeException("The password is wrong");
             } else {
                 String token = TokenUtils.createEmployeeToken(existCustomer);

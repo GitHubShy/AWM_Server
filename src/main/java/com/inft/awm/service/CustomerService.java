@@ -15,7 +15,7 @@ public class CustomerService {
     CustomerRepository customerRepository;
 
     public void register(Customer customer) {
-        Customer existCustomer = customerRepository.findByUserName(customer.getUser_name());
+        Customer existCustomer = customerRepository.findByUserName(customer.getAccount_name());
 
         if (existCustomer != null) {
             throw new RuntimeException("The customer name has already been exist");
@@ -24,14 +24,14 @@ public class CustomerService {
         customerRepository.save(customer);
     }
 
-    public ResponseLogin login(Customer loginCustomer) {
+    public ResponseLogin login(String account_name,String password) {
 
-        Customer existCustomer = customerRepository.findByUserName(loginCustomer.getUser_name());
+        Customer existCustomer = customerRepository.findByUserName(account_name);
 
         if (existCustomer == null) {
             throw new RuntimeException("The customer dos not exist");
         } else {
-            if (!loginCustomer.getPassword().equals(existCustomer.getPassword())) {
+            if (!password.equals(existCustomer.getPassword())) {
                 throw new RuntimeException("The password is wrong");
             } else {
                 String token = TokenUtils.createCustomerToken(existCustomer);

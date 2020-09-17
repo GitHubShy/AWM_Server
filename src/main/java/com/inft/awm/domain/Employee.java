@@ -15,9 +15,9 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotBlank(message = "The user name cannot be empty")
+    @NotBlank(message = "The account name cannot be empty")
     @Length(min = 2, max = 50, message = "The length must be between 2 and 50")
-    private String user_name;
+    private String account_name;
 
     @NotBlank(message = "The password cannot be empty")
     private String password;
@@ -60,12 +60,12 @@ public class Employee {
         this.id = customer_id;
     }
 
-    public String getUser_name() {
-        return user_name;
+    public String getAccount_name() {
+        return account_name;
     }
 
-    public void setUser_name(String user_name) {
-        this.user_name = user_name;
+    public void setAccount_name(String account_name) {
+        this.account_name = account_name;
     }
 
     public String getPassword() {

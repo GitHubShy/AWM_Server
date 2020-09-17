@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -27,8 +28,8 @@ public class GlobalConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authenticationInterceptor())
-                .addPathPatterns("/awm_server/**");
-        // 拦截所有请求，通过判断是否有 @LoginRequired 注解 决定是否需要登录
+                .addPathPatterns("/awm_server/**")
+                .excludePathPatterns("/**/*.css", "/**/*.js", "/**/*.png", "/**/*.jpg", "/**/*.jpeg", "/*.html", "/**/*.html","/swagger-resources/**");
     }
 
     @Override
@@ -41,6 +42,16 @@ public class GlobalConfig implements WebMvcConfigurer {
          */
         registry.addResourceHandler("/images/**")
                 .addResourceLocations("file:"+fileSavePath);
+
+//        registry.addResourceHandler("swagger-ui.html")
+//                .addResourceLocations("classpath:/META-INF/resources/");
+//        registry.addResourceHandler("/webjars/**")
+//                .addResourceLocations("classpath:/META-INF/resources/webjars/");
+
+        // 解决静态资源无法访问
+
+        //registry.addResourceHandler("/").addResourceLocations("classpath:/static/");
+
     }
     @Bean
     public AuthenticationInterceptor authenticationInterceptor() {
@@ -48,6 +59,7 @@ public class GlobalConfig implements WebMvcConfigurer {
     }
 
     @RestControllerAdvice
+    @ControllerAdvice(basePackages = "com.inft.awm.controller")
     static class ResultResponseAdvice implements ResponseBodyAdvice<Object> {
         @Override
         public boolean supports(MethodParameter methodParameter, Class<? extends HttpMessageConverter<?>> aClass) {

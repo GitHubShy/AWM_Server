@@ -5,8 +5,8 @@ public class Result<T> {
 
     private String message = "Success";
 
-    //0:Success   1:Fail
-    private int code = 0;
+    //200:Success   1:Fail
+    private int code = 200;
 
     private T data;
 

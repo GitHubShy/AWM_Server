@@ -12,21 +12,21 @@ public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer customer_id;
+    private Integer id;
 
-    @NotBlank(message = "The user name cannot be empty")
+    @NotBlank(message = "The account name cannot be empty")
     @Length(min = 2, max = 50, message = "The length must be between 2 and 50")
-    private String user_name;
+    private String account_name;
 
     @NotBlank(message = "The password cannot be empty")
     private String password;
 
+    @Email(message = "The email address format is incorrect")
+    private String email;
+
     private String first_name;
 
     private String surname;
-
-    @Email(message = "The email address format is incorrect")
-    private String email;
 
     private Integer gender;
 
@@ -34,20 +34,20 @@ public class Customer {
 
     private Integer birth_year;
 
-    public Integer getCustomer_id() {
-        return customer_id;
+    public Integer getId() {
+        return id;
     }
 
-    public void setCustomer_id(Integer customer_id) {
-        this.customer_id = customer_id;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public String getUser_name() {
-        return user_name;
+    public String getAccount_name() {
+        return account_name;
     }
 
-    public void setUser_name(String user_name) {
-        this.user_name = user_name;
+    public void setAccount_name(String account_name) {
+        this.account_name = account_name;
     }
 
     public String getPassword() {
