@@ -37,6 +37,10 @@ public class EmployeeService {
 
     public ResponseLogin login(String account_name, String password) {
 
+        if (StringUtils.isEmpty(account_name)) {
+            throw new RuntimeException("The account name can not be empty");
+        }
+
         Employee existCustomer = employeeRepository.findByEmployeeName(account_name);
 
         if (existCustomer == null) {

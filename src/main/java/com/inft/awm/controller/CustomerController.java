@@ -7,14 +7,12 @@ import com.inft.awm.response.SimpleResult;
 import com.inft.awm.service.CustomerService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/awm_server/customer")
 @Api(tags = "Interfaces For Customer")
+@CrossOrigin
 public class CustomerController {
     @Autowired
     private CustomerService customerService;

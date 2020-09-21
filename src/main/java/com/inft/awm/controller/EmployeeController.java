@@ -3,14 +3,13 @@ package com.inft.awm.controller;
 import com.inft.awm.custom.NeedToken;
 import com.inft.awm.domain.Attendance;
 import com.inft.awm.domain.Employee;
+import com.inft.awm.domain.request.RequestLogin;
 import com.inft.awm.response.ResponseLogin;
 import com.inft.awm.response.SimpleResult;
 import com.inft.awm.service.EmployeeService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -18,6 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/awm_server/employee")
 @Api(tags = "Interfaces For Employee")
+@CrossOrigin
 public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
@@ -54,16 +54,12 @@ public class EmployeeController {
 
     @PostMapping(value = "/login")
     @ApiOperation(value = "Employee login", notes = "")
-    @ApiImplicitParams({
-            @ApiImplicitParam(paramType="body",name="account_name", dataTypeClass = String.class,required=true),
-            @ApiImplicitParam(paramType="body",name="password",dataTypeClass = String.class,required=true),
-    })
     @ApiResponses({
             @ApiResponse(code = 200, message = "success",response = ResponseLogin.class),
             @ApiResponse(code = 1, message = "failed reason is shown in message",response = SimpleResult.class),
     })
-    public ResponseLogin login(String account_name, String password) {
-        return employeeService.login(account_name,password);
+    public ResponseLogin login(@RequestBody RequestLogin rl) {
+        return employeeService.login(rl.getAccount_name(),rl.getPassword());
     }
 
     @PostMapping(value = "/clock")

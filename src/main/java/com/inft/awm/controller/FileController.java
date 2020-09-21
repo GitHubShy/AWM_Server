@@ -5,6 +5,7 @@ import com.inft.awm.response.SimpleResult;
 import com.inft.awm.utils.FileUtils;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +18,7 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/awm_server/file")
 @Api(tags = "Interfaces for files")
+@CrossOrigin
 public class FileController {
 
     @Value("${file-save-path}")
