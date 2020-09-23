@@ -1,6 +1,5 @@
 package com.inft.awm.controller;
 
-import com.inft.awm.custom.NeedToken;
 import com.inft.awm.domain.Customer;
 import com.inft.awm.response.ResponseLogin;
 import com.inft.awm.response.SimpleResult;

@@ -3,24 +3,32 @@ package com.inft.awm.controller;
 import com.inft.awm.custom.NeedToken;
 import com.inft.awm.domain.Attendance;
 import com.inft.awm.domain.Employee;
+import com.inft.awm.domain.request.RequestGetEmployee;
 import com.inft.awm.domain.request.RequestLogin;
+import com.inft.awm.repository.EmployeeRepository;
 import com.inft.awm.response.ResponseLogin;
 import com.inft.awm.response.SimpleResult;
 import com.inft.awm.service.EmployeeService;
+import com.inft.awm.utils.StringUtils;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/awm_server/employee")
 @Api(tags = "Interfaces For Employee")
 @CrossOrigin
 public class EmployeeController {
+
     @Autowired
     private EmployeeService employeeService;
+
+    @Autowired
+    EmployeeRepository employeeRepository;
 
     @PostMapping(value = "/getAllEmployee")
     @NeedToken
@@ -92,5 +100,18 @@ public class EmployeeController {
     public List<Attendance> getAttendance(HttpServletRequest httpServletRequest, String date) {
         String id = (String) httpServletRequest.getAttribute("id");
         return employeeService.findAttendance(id,date);
+    }
+
+    @PostMapping(value = "/getEmployee")
+    @NeedToken
+    public Employee getEmployee(HttpServletRequest httpServletRequest, @RequestBody RequestGetEmployee requestEmployee) {
+        String acturalId = requestEmployee.getId();
+        if (StringUtils.isEmpty(requestEmployee.getId()) || "0".equals(requestEmployee.getId())) {
+            acturalId = (String) httpServletRequest.getAttribute("id");
+        } else {
+            acturalId = requestEmployee.getId();
+        }
+        Employee user = employeeRepository.findByEmployeeId(Integer.valueOf(acturalId));
+        return user;
     }
 }

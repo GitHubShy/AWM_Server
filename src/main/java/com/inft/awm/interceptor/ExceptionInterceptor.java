@@ -13,7 +13,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import java.util.Set;
 
-@RestControllerAdvice
+//@RestControllerAdvice
 public class ExceptionInterceptor {
     private static final Logger LOG = LoggerFactory.getLogger(ExceptionInterceptor.class);
 

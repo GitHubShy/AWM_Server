@@ -44,6 +44,14 @@ public class Employee {
 
     private Integer title;
 
+    public Integer getTitle() {
+        return title;
+    }
+
+    public void setTitle(Integer title) {
+        this.title = title;
+    }
+
     public Float getPayment_rate() {
         return payment_rate;
     }
