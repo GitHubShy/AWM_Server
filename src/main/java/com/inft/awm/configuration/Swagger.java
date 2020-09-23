@@ -30,7 +30,7 @@ public class Swagger {
                 .title("API Document For AWM Server")
                 .description("Author:Yao Shi")
                 .contact(new Contact("Yao Shi","","147573224@qq.com"))
-                .version("1.2")
+                .version("1.3")
                 .build();
     }
 

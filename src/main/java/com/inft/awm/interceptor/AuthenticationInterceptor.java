@@ -38,6 +38,10 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             return true;
         }
 
+        if("OPTIONS".equals(request.getMethod().toUpperCase())) {
+            return true;
+        }
+
         HandlerMethod handlerMethod=(HandlerMethod)handler;
         Method method=handlerMethod.getMethod();
 
