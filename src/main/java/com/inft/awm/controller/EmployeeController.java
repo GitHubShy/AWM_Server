@@ -55,9 +55,9 @@ public class EmployeeController {
             @ApiResponse(code = 200, message = "success"),
             @ApiResponse(code = 1, message = "failed reason is shown in message",response = SimpleResult.class),
     })
-    public SimpleResult register(Employee employee) {
-        employeeService.register(employee);
-        return new SimpleResult("Success");
+    public Employee register(@RequestBody Employee employee) {
+        Employee newEmployee = employeeService.register(employee);
+        return newEmployee;
     }
 
     @PostMapping(value = "/login")
@@ -113,5 +113,12 @@ public class EmployeeController {
         }
         Employee user = employeeRepository.findByEmployeeId(Integer.valueOf(acturalId));
         return user;
+    }
+
+    @PostMapping(value = "/updateEmployee")
+    @NeedToken
+    public SimpleResult updateEmployee(HttpServletRequest httpServletRequest, @RequestBody Employee employee) {
+        employeeService.updateEmployee(employee);
+        return new SimpleResult("Success");
     }
 }

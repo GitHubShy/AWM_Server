@@ -1,5 +1,6 @@
 package com.inft.awm.domain;
 
+import com.inft.awm.utils.TimeUtils;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -25,24 +26,38 @@ public class Employee {
     @Email(message = "The email address format is incorrect")
     private String email;
 
-    @NotNull(message = "The TFN cannot be empty")
-    private Long tax_file_number;
-
     @NotNull(message = "The payment rate cannot be empty")
     private Float payment_rate;
 
-    @NotNull(message = "The payment rate cannot be empty")
-    private Long phone;
-
+    @NotBlank(message = "The first name cannot be empty")
     private String first_name;
 
+    @NotBlank(message = "The second name cannot be empty")
     private String surname;
+
+    private String tax_file_number;
+    
+    private String phone;
 
     private Integer gender;
 
-    private Integer birth_year;
+    private String birth_year;
 
     private Integer title;
+
+    private String portrait_url;
+
+    public String getPortrait_url() {
+        return portrait_url;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setPortrait_url(String portrait_url) {
+        this.portrait_url = portrait_url;
+    }
 
     public Integer getTitle() {
         return title;
@@ -116,27 +131,27 @@ public class Employee {
         this.gender = gender;
     }
 
-    public Long getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(Long phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
-    public Integer getBirth_year() {
+    public String getBirth_year() {
         return birth_year;
     }
 
-    public void setBirth_year(Integer birth_year) {
-        this.birth_year = birth_year;
+    public void setBirth_year(String birth_year) {
+        this.birth_year = TimeUtils.getCurrentDate(birth_year);
     }
 
-    public Long getTax_file_number() {
+    public String getTax_file_number() {
         return tax_file_number;
     }
 
-    public void setTax_file_number(Long tax_file_number) {
+    public void setTax_file_number(String tax_file_number) {
         this.tax_file_number = tax_file_number;
     }
 }

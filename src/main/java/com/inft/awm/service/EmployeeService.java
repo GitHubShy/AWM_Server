@@ -25,14 +25,15 @@ public class EmployeeService {
     @Autowired
     AttendanceRepository attendanceRepository;
 
-    public void register(Employee employee) {
+    public Employee register(Employee employee) {
         Employee existCustomer = employeeRepository.findByEmployeeName(employee.getAccount_name());
 
         if (existCustomer != null) {
             throw new RuntimeException("The employee name has already been exist");
         }
 
-        employeeRepository.save(employee);
+        Employee save = employeeRepository.save(employee);
+        return save;
     }
 
     public ResponseLogin login(String account_name, String password) {
@@ -98,5 +99,50 @@ public class EmployeeService {
             attendances.add(attendanceById);
         }
         return attendances;
+    }
+
+    public void updateEmployee(Employee employee){
+        if (employee == null) {
+            throw new RuntimeException("employee can not be null");
+        }
+        Employee originalEmployee = employeeRepository.findByEmployeeId(employee.getId());
+
+        if (employeeRepository.findByEmployeeName(employee.getAccount_name()) != null) {
+            throw new RuntimeException("This account name already exists");
+        }
+        if (!StringUtils.isEmpty(employee.getAccount_name())) {
+            originalEmployee.setAccount_name(employee.getAccount_name());
+        }
+        if (!StringUtils.isEmpty(employee.getFirst_name())) {
+            originalEmployee.setFirst_name(employee.getFirst_name());
+        }
+        if (!StringUtils.isEmpty(employee.getSurname())) {
+            originalEmployee.setSurname(employee.getSurname());
+        }
+        if (!StringUtils.isEmpty(employee.getPassword())) {
+            originalEmployee.setPassword(employee.getPassword());
+        }
+        if (!StringUtils.isEmpty(employee.getTax_file_number())) {
+            originalEmployee.setTax_file_number(employee.getTax_file_number());
+        }
+        if (!StringUtils.isEmpty(employee.getEmail())) {
+            originalEmployee.setEmail(employee.getEmail());
+        }
+        if (!StringUtils.isEmpty(employee.getPhone())) {
+            originalEmployee.setPhone(employee.getPhone());
+        }
+        if (employee.getTitle() != null) {
+            originalEmployee.setTitle(employee.getTitle());
+        }
+        if (employee.getPayment_rate() != null) {
+            originalEmployee.setPayment_rate(employee.getPayment_rate() );
+        }
+        if (employee.getBirth_year() != null) {
+            originalEmployee.setBirth_year(employee.getBirth_year());
+        }
+        if (employee.getGender() != null) {
+            originalEmployee.setGender(employee.getGender());
+        }
+        employeeRepository.save(originalEmployee);
     }
 }
