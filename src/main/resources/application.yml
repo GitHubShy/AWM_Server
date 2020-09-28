@@ -1,4 +1,5 @@
 file-save-path: /usr/awmImages/
+#file-save-path: D:/images/
 server:
   port: 8080
 

@@ -3,6 +3,7 @@ package com.inft.awm.controller;
 import com.inft.awm.custom.NeedToken;
 import com.inft.awm.domain.Attendance;
 import com.inft.awm.domain.Employee;
+import com.inft.awm.domain.request.RequestDeleteEmployee;
 import com.inft.awm.domain.request.RequestGetEmployee;
 import com.inft.awm.domain.request.RequestLogin;
 import com.inft.awm.repository.EmployeeRepository;
@@ -119,6 +120,13 @@ public class EmployeeController {
     @NeedToken
     public SimpleResult updateEmployee(HttpServletRequest httpServletRequest, @RequestBody Employee employee) {
         employeeService.updateEmployee(employee);
+        return new SimpleResult("Success");
+    }
+
+    @PostMapping(value = "/deleteEmployee")
+    @NeedToken
+    public SimpleResult deleteEmployee(HttpServletRequest httpServletRequest, @RequestBody RequestDeleteEmployee employee) {
+        employeeRepository.deleteById(employee.getId());
         return new SimpleResult("Success");
     }
 }

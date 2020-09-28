@@ -28,11 +28,9 @@ public class Customer {
 
     private String surname;
 
-    private Integer gender;
+    private String portrait_url;
 
-    private Long phone;
-
-    private Integer birth_year;
+    private String phone;
 
     public Integer getId() {
         return id;
@@ -82,27 +80,19 @@ public class Customer {
         this.email = email;
     }
 
-    public Integer getGender() {
-        return gender;
-    }
-
-    public void setGender(Integer gender) {
-        this.gender = gender;
-    }
-
-    public Long getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(Long phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
-    public Integer getBirth_year() {
-        return birth_year;
+    public String getPortrait_url() {
+        return portrait_url;
     }
 
-    public void setBirth_year(Integer birth_year) {
-        this.birth_year = birth_year;
+    public void setPortrait_url(String portrait_url) {
+        this.portrait_url = portrait_url;
     }
 }

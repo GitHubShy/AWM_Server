@@ -107,7 +107,7 @@ public class EmployeeService {
         }
         Employee originalEmployee = employeeRepository.findByEmployeeId(employee.getId());
 
-        if (employeeRepository.findByEmployeeName(employee.getAccount_name()) != null) {
+        if (employeeRepository.findByEmployeeName(employee.getAccount_name()) != null && employeeRepository.findByEmployeeName(employee.getAccount_name()).getId() != employee.getId()) {
             throw new RuntimeException("This account name already exists");
         }
         if (!StringUtils.isEmpty(employee.getAccount_name())) {
