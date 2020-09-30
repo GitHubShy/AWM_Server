@@ -73,6 +73,8 @@ public class EmployeeService {
             attendanceById = new Attendance(Integer.valueOf(employee_id),currentDate, TimeUtils.getCurrentTime());
         } else {
             attendanceById.setOff_time(TimeUtils.getCurrentTime());
+            attendanceById.setWork_hours(TimeUtils.getDateDiffHours(attendanceById.getOn_time(),attendanceById.getOff_time(),"HH:mm:ss"));
+            double workingHours = TimeUtils.getDateDiffHours(attendanceById.getOn_time(),attendanceById.getOff_time(),"HH:mm:ss");
         }
         attendanceRepository.save(attendanceById);
     }

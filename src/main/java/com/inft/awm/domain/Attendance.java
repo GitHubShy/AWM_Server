@@ -1,7 +1,7 @@
 package com.inft.awm.domain;
 
 import javax.persistence.*;
-;
+
 
 @Entity
 @Table
@@ -18,6 +18,8 @@ public class Attendance {
     private String on_time;
 
     private String off_time;
+
+    private double work_hours;
 
     public Attendance() {
     }
@@ -74,4 +76,13 @@ public class Attendance {
     public void setOff_time(String off_time) {
         this.off_time = off_time;
     }
+
+    public double getWork_hours() {
+        return work_hours;
+    }
+
+    public void setWork_hours(double work_hours) {
+        this.work_hours = work_hours;
+    }
+
 }

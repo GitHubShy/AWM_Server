@@ -2,6 +2,8 @@ package com.inft.awm.controller;
 
 
 import com.inft.awm.custom.NeedToken;
+import com.inft.awm.domain.Aircraft;
+import com.inft.awm.domain.response.ResponseAircraft;
 import com.inft.awm.response.SimpleResult;
 import com.inft.awm.utils.FileUtils;
 import io.swagger.annotations.*;
