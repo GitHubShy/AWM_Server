@@ -33,7 +33,7 @@ public class EmployeeController {
 
     @PostMapping(value = "/getAllEmployee")
     @NeedToken
-    public Iterable<Employee> getAllCustomer() {
+    public Iterable<Employee> getAllEmpoyees() {
         return employeeService.getAllEmployees();
     }
 

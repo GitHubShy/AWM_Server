@@ -29,8 +29,6 @@ public class Component {
      */
     private String provider;
 
-    private Float total_flight_time;
-
     private Integer maintenance_cycle;
 
     private String last_modify_time;
@@ -79,13 +77,6 @@ public class Component {
         this.provider = provider;
     }
 
-    public Float getTotal_flight_time() {
-        return total_flight_time;
-    }
-
-    public void setTotal_flight_time(Float total_flight_time) {
-        this.total_flight_time = total_flight_time;
-    }
 
     public Integer getMaintenance_cycle() {
         return maintenance_cycle;
