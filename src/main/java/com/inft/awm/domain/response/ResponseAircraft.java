@@ -20,6 +20,7 @@ public class ResponseAircraft extends Aircraft {
         this.registration = ac.getRegistration();
         this.serial = ac.getSerial();
         this.status = ac.getStatus();
+        this.type = ac.getType();
     }
 
     public List<Component> getComponents() {

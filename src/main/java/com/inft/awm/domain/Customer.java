@@ -32,6 +32,8 @@ public class Customer {
 
     private String phone;
 
+    private String company_name;
+
     public Integer getId() {
         return id;
     }
@@ -94,5 +96,13 @@ public class Customer {
 
     public void setPortrait_url(String portrait_url) {
         this.portrait_url = portrait_url;
+    }
+
+    public String getCompany_name() {
+        return company_name;
+    }
+
+    public void setCompany_name(String company_name) {
+        this.company_name = company_name;
     }
 }

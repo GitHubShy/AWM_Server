@@ -21,16 +21,44 @@ public class WorkshopService {
     @Autowired
     ComponentRepository componentRepository;
 
-    public List<ResponseAircraft> getAircrafts(Integer airCraftId) {
+    public Aircraft registerAircraft(Aircraft aircraft) {
+        Aircraft saved = aircraftRepository.save(aircraft);
+        return saved;
+    }
+
+    public void registerComponents(List<Component> components) {
+        componentRepository.saveAll(components);
+    }
+
+
+    public List<ResponseAircraft> getAircraft(Integer aircraftId) {
 
         Iterable<Aircraft> allAircraft;
-        if(airCraftId != null && airCraftId != 0) {
-            allAircraft = aircraftRepository.findAircraft(airCraftId);
+        if(aircraftId != null && aircraftId != 0) {
+            allAircraft = aircraftRepository.findAircraft(aircraftId);
         } else {
             allAircraft = aircraftRepository.findAll();
         }
 
 
+        ArrayList<ResponseAircraft> responseAircraft = getResponseAircrafts(allAircraft);
+        return responseAircraft;
+    }
+
+    public List<ResponseAircraft> getCustomerAircraft(Integer customerId) {
+
+        Iterable<Aircraft> allAircraft;
+        if(customerId != null && customerId != 0) {
+            allAircraft = aircraftRepository.findAircraftByCustomer(customerId);
+        } else {
+            throw new RuntimeException("The customer id is null");
+        }
+
+        ArrayList<ResponseAircraft> responseAircraft = getResponseAircrafts(allAircraft);
+        return responseAircraft;
+    }
+
+    private ArrayList<ResponseAircraft> getResponseAircrafts(Iterable<Aircraft> allAircraft) {
         Iterable<Component> allComponents = componentRepository.findAll();
 
         ArrayList<Component> components = new ArrayList<>();
@@ -38,12 +66,12 @@ public class WorkshopService {
         ArrayList<ResponseAircraft> responseAircraft = new ArrayList<>();
 
         Iterator<Component> componentIterator = allComponents.iterator();
-        while(componentIterator.hasNext()) {
+        while (componentIterator.hasNext()) {
             components.add(componentIterator.next());
         }
 
         Iterator<Aircraft> aircraftIterator = allAircraft.iterator();
-        while(aircraftIterator.hasNext()) {
+        while (aircraftIterator.hasNext()) {
             Aircraft aircraft = aircraftIterator.next();
             ResponseAircraft ra = new ResponseAircraft(aircraft);
             Integer aircraftId = aircraft.getId();
@@ -57,5 +85,6 @@ public class WorkshopService {
         }
         return responseAircraft;
     }
+
 
 }

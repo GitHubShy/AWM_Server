@@ -16,29 +16,18 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
 
-    @GetMapping(value = "/getAllCustomers")
+    @PostMapping(value = "/getAllCustomers")
     public Iterable<Customer> getAllCustomer() {
         return customerService.getAllCustomers();
     }
 
     @PostMapping(value = "/register")
     @ApiOperation(value = "Register a customer", notes = "")
-    @ApiImplicitParams({
-            @ApiImplicitParam(paramType="body",name="user_name",required=true),
-            @ApiImplicitParam(paramType="body",name="password",required=true),
-            @ApiImplicitParam(paramType="body",name="email",required=true),
-            @ApiImplicitParam(paramType="body",name="first_name"),
-            @ApiImplicitParam(paramType="body",name="surname"),
-            @ApiImplicitParam(paramType="body",name="gender"),
-            @ApiImplicitParam(paramType="body",name="phone"),
-            @ApiImplicitParam(paramType="body",name="birth_year"),
-            @ApiImplicitParam(paramType="body",name="id",value = "Do not pass this paratmeter,because this value is used pk in database"),
-    })
     @ApiResponses({
             @ApiResponse(code = 200, message = "success"),
             @ApiResponse(code = 1, message = "failed reason is shown in message",response = SimpleResult.class),
     })
-    public SimpleResult register(Customer customer) {
+    public SimpleResult register(@RequestBody Customer customer) {
         customerService.register(customer);
         return new SimpleResult("Success");
     }

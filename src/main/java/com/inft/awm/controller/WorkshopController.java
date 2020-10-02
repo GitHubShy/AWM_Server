@@ -1,7 +1,10 @@
 package com.inft.awm.controller;
 
 import com.inft.awm.custom.NeedToken;
+import com.inft.awm.domain.Aircraft;
+import com.inft.awm.domain.Component;
 import com.inft.awm.domain.response.ResponseAircraft;
+import com.inft.awm.response.SimpleResult;
 import com.inft.awm.service.WorkshopService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +24,25 @@ public class WorkshopController {
     private WorkshopService workshopService;
 
     @PostMapping(value = "/getAircraft")
+    @NeedToken
     public List<ResponseAircraft> getAllAircraft(HttpServletRequest httpServletRequest,Integer id) {
-        return workshopService.getAircrafts(id);
+        return workshopService.getAircraft(id);
+    }
+
+    @PostMapping(value = "/getCustomerAircraft")
+    public List<ResponseAircraft> getCustomerAircraft(HttpServletRequest httpServletRequest,Integer id) {
+        return workshopService.getCustomerAircraft(id);
+    }
+
+    @PostMapping(value = "/registerAircraft")
+    public Aircraft registerAircraft(HttpServletRequest httpServletRequest, @RequestBody Aircraft aircraft) {
+        Aircraft registerAircraft = workshopService.registerAircraft(aircraft);
+        return registerAircraft;
+    }
+
+    @PostMapping(value = "/registerComponents")
+    public SimpleResult registerComponents(HttpServletRequest httpServletRequest, @RequestBody List<Component> components) {
+        workshopService.registerComponents(components);
+        return new SimpleResult("Success");
     }
 }
