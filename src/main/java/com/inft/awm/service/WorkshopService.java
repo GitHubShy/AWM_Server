@@ -51,7 +51,7 @@ public class WorkshopService {
         if(customerId != null && customerId != 0) {
             allAircraft = aircraftRepository.findAircraftByCustomer(customerId);
         } else {
-            throw new RuntimeException("The customer id is null");
+            throw new RuntimeException("The customer id is invalid: " + customerId);
         }
 
         ArrayList<ResponseAircraft> responseAircraft = getResponseAircrafts(allAircraft);

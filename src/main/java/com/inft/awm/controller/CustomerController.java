@@ -1,6 +1,7 @@
 package com.inft.awm.controller;
 
 import com.inft.awm.domain.Customer;
+import com.inft.awm.mail.MailServiceImp;
 import com.inft.awm.response.ResponseLogin;
 import com.inft.awm.response.SimpleResult;
 import com.inft.awm.service.CustomerService;

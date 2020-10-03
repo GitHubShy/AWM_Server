@@ -11,3 +11,14 @@ spring:
     password: 12345678
     driver-class-name: com.mysql.jdbc.Driver
 
+  mail:
+    host: smtp.qq.com #发送邮件服务器
+    username: 147573224@qq.com #发送邮件的邮箱地址
+    password:  zxfajydjutsvbjhf #客户端授权码，不是邮箱密码，这个在qq邮箱设置里面自动生成的
+    properties.mail.smtp.port: 465 #端口号465或587
+    from: 147573224@qq.com # 发送邮件的地址，和上面username一致可以任意
+    properties.mail.smtp.starttls.enable: true
+    properties.mail.smtp.starttls.required: true
+    properties.mail.smtp.ssl.enable: true
+    default-encoding: utf-8
+
