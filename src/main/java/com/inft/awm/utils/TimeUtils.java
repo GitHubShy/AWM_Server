@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class TimeUtils {
@@ -95,4 +96,27 @@ public class TimeUtils {
     }
 
 
+    public static String addDateHours(String startTime, Integer hours,String format){
+
+        SimpleDateFormat sd = new SimpleDateFormat(format);
+
+        Date date = null;
+        try {
+            date = sd.parse(startTime);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        if (date == null)
+            return "";
+        System.out.println("front:" + sd.format(date)); //显示输入的日期
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.HOUR, hours);// 24小时制
+        date = cal.getTime();
+        System.out.println("after:" + sd.format(date));  //显示更新后的日期
+        return sd.format(date);
+
     }
+
+
+}

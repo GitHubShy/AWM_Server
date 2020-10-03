@@ -5,12 +5,15 @@ import com.inft.awm.domain.Component;
 import com.inft.awm.domain.response.ResponseAircraft;
 import com.inft.awm.repository.AircraftRepository;
 import com.inft.awm.repository.ComponentRepository;
+import com.inft.awm.utils.StringUtils;
+import com.inft.awm.utils.TimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class WorkshopService {
@@ -22,11 +25,23 @@ public class WorkshopService {
     ComponentRepository componentRepository;
 
     public Aircraft registerAircraft(Aircraft aircraft) {
+        String nextTime = TimeUtils.addDateHours(aircraft.getLast_modify_time(),aircraft.getMaintenance_cycle(),"yyyy-MM-dd");
+        aircraft.setNext_modify_time(nextTime);
         Aircraft saved = aircraftRepository.save(aircraft);
         return saved;
     }
 
     public void registerComponents(List<Component> components) {
+        Aircraft aircraft = null;
+        for (Component c : components) {
+            if (StringUtils.isEmpty(c.getLast_modify_time())) {
+                if (aircraft == null) {
+                    aircraft = aircraftRepository.findById(c.getId()).get();
+                }
+                c.setLast_modify_time(aircraft.getLast_modify_time());
+            }
+            c.setNext_modify_time(TimeUtils.addDateHours(c.getLast_modify_time(),c.getMaintenance_cycle(),"yyyy-MM-dd"));
+        }
         componentRepository.saveAll(components);
     }
 
@@ -39,7 +54,6 @@ public class WorkshopService {
         } else {
             allAircraft = aircraftRepository.findAll();
         }
-
 
         ArrayList<ResponseAircraft> responseAircraft = getResponseAircrafts(allAircraft);
         return responseAircraft;

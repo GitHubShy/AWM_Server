@@ -1,6 +1,8 @@
 package com.inft.awm.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table
@@ -10,16 +12,16 @@ public class Component {
     private Integer id;
 
     /**
-     * 0:undefined 1:Engine 2:Wing 3:Fuselage  4:Avionics System 5:Landing Gear
+     * 0:undefined 1:Engine 2:Wing 3:Fuselage 4:Avionics System 5:Landing Gear
      */
-    private String type;
-
-    private String pic;
+    @NotNull(message = "The type cannot be empty")
+    private Integer type;
 
     /**
      * E0001,F0001,L0001
      * W0001,A0001
      */
+    @NotBlank(message = "The registration cannot be empty")
     private String registration;
 
     /**
@@ -27,15 +29,20 @@ public class Component {
      * Pratt & Whitney Group Company,The Airbus Company,The Boeing Company
      *
      */
+    @NotBlank(message = "The manufacturer cannot be empty")
     private String provider;
 
+    @NotNull(message = "The aircraft_id cannot be empty")
+    private Integer aircraft_id;
+
+    @NotNull(message = "The maintenance_cycle cannot be empty")
     private Integer maintenance_cycle;
+
+    private String pic;
 
     private String last_modify_time;
 
     private String next_modify_time;
-
-    private Integer aircraft_id;
 
     public Integer getId() {
         return id;
@@ -45,11 +52,11 @@ public class Component {
         this.id = id;
     }
 
-    public String getType() {
+    public Integer getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(Integer type) {
         this.type = type;
     }
 

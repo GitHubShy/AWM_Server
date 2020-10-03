@@ -1,6 +1,8 @@
 package com.inft.awm.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table
@@ -9,36 +11,52 @@ public class Aircraft {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Integer id;
 
+    /**
+     *  For example A380
+     */
+    @NotBlank(message = "The type cannot be empty")
     protected String type;
-
-    protected String aircraft_pic;
 
     /**
      * MSN=Manufacturing Serial number 制造序列号，制造商对其所有生产线生产的飞机数量的统计，不区分机型，
      *    表示该架飞机在厂家所生产全部飞机中的排序号。比如：波音公司制造序列号为38388的飞机，代表波音生产的第38388架飞机。
      */
+    @NotBlank(message = "The registration cannot be empty")
     protected String registration;
 
     /**
      * Registration number注册号，此编号由飞机持有国的官方制定，开头的一、两位的字母由国际航空组织给定，代表该航空器注册的国籍。
      *    一个注册号对应一架飞机，没有重号，必须符合国际民用航空公约的规定，一般在机身尾部和两侧机翼，少数在垂直尾翼。飞机注册号包括国籍标志和登记标志。比如：我国国内一般是B-XXXX(四位数）
      */
+    @NotBlank(message = "The serial cannot be empty")
     protected String serial;
 
+    @NotNull(message = "The total_flight_time cannot be empty")
     protected Float total_flight_time;
 
+    @NotNull(message = "The maintenance_cycle cannot be empty")
     protected Integer maintenance_cycle;
 
+    /**
+     * 2016-10-22
+     */
+    @NotBlank(message = "The last_modify_time cannot be empty")
     protected String last_modify_time;
 
-    protected String next_modify_time;
-
+    @NotNull(message = "The customer_id cannot be empty")
     protected Integer customer_id;
 
     /**
-     *0:Flighting  1:Maintaining
+     * 0:Servicing  1:Need maintaining 2:Maintaining 99:need staff to confirm register information
      */
     protected Integer status;
+
+    /**
+     * 2020-10-22
+     */
+    protected String next_modify_time;
+
+    protected String aircraft_pic;
 
     public Integer getId() {
         return id;
