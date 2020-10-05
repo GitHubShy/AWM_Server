@@ -3,6 +3,7 @@ package com.inft.awm.controller;
 import com.inft.awm.custom.NeedToken;
 import com.inft.awm.domain.Aircraft;
 import com.inft.awm.domain.Component;
+import com.inft.awm.domain.Job;
 import com.inft.awm.domain.response.ResponseAircraft;
 import com.inft.awm.response.SimpleResult;
 import com.inft.awm.service.WorkshopService;
@@ -43,6 +44,18 @@ public class WorkshopController {
     @PostMapping(value = "/registerComponents")
     public SimpleResult registerComponents(HttpServletRequest httpServletRequest, @RequestBody List<Component> components) {
         workshopService.registerComponents(components);
+        return new SimpleResult("Success");
+    }
+
+    @PostMapping(value = "/getAllJobs")
+    public List<Job> getAllJobs(HttpServletRequest httpServletRequest, int id) {
+        final List<Job> allJobs = workshopService.getAllJobs(id);
+        return allJobs;
+    }
+
+    @PostMapping(value = "/createJob")
+    public SimpleResult createAllJobs(HttpServletRequest httpServletRequest, @RequestBody Job job) {
+        workshopService.createJob(job);
         return new SimpleResult("Success");
     }
 }

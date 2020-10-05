@@ -2,9 +2,11 @@ package com.inft.awm.service;
 
 import com.inft.awm.domain.Aircraft;
 import com.inft.awm.domain.Component;
+import com.inft.awm.domain.Job;
 import com.inft.awm.domain.response.ResponseAircraft;
 import com.inft.awm.repository.AircraftRepository;
 import com.inft.awm.repository.ComponentRepository;
+import com.inft.awm.repository.JobRepository;
 import com.inft.awm.utils.StringUtils;
 import com.inft.awm.utils.TimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +26,11 @@ public class WorkshopService {
     @Autowired
     ComponentRepository componentRepository;
 
+    @Autowired
+    JobRepository jobRepository;
+
     public Aircraft registerAircraft(Aircraft aircraft) {
-        String nextTime = TimeUtils.addDateHours(aircraft.getLast_modify_time(),aircraft.getMaintenance_cycle(),"yyyy-MM-dd");
+        String nextTime = TimeUtils.addDateHours(aircraft.getLast_modify_time(), aircraft.getMaintenance_cycle(), "yyyy-MM-dd");
         aircraft.setNext_modify_time(nextTime);
         Aircraft saved = aircraftRepository.save(aircraft);
         return saved;
@@ -40,7 +45,7 @@ public class WorkshopService {
                 }
                 c.setLast_modify_time(aircraft.getLast_modify_time());
             }
-            c.setNext_modify_time(TimeUtils.addDateHours(c.getLast_modify_time(),c.getMaintenance_cycle(),"yyyy-MM-dd"));
+            c.setNext_modify_time(TimeUtils.addDateHours(c.getLast_modify_time(), c.getMaintenance_cycle(), "yyyy-MM-dd"));
         }
         componentRepository.saveAll(components);
     }
@@ -49,7 +54,7 @@ public class WorkshopService {
     public List<ResponseAircraft> getAircraft(Integer aircraftId) {
 
         Iterable<Aircraft> allAircraft;
-        if(aircraftId != null && aircraftId != 0) {
+        if (aircraftId != null && aircraftId != 0) {
             allAircraft = aircraftRepository.findAircraft(aircraftId);
         } else {
             allAircraft = aircraftRepository.findAll();
@@ -62,7 +67,7 @@ public class WorkshopService {
     public List<ResponseAircraft> getCustomerAircraft(Integer customerId) {
 
         Iterable<Aircraft> allAircraft;
-        if(customerId != null && customerId != 0) {
+        if (customerId != null && customerId != 0) {
             allAircraft = aircraftRepository.findAircraftByCustomer(customerId);
         } else {
             throw new RuntimeException("The customer id is invalid: " + customerId);
@@ -70,6 +75,30 @@ public class WorkshopService {
 
         ArrayList<ResponseAircraft> responseAircraft = getResponseAircrafts(allAircraft);
         return responseAircraft;
+    }
+
+    public List<Job> getAllJobs(int employeeId) {
+        ArrayList<Job> jobs = new ArrayList<>();
+        Iterable<Job> jobIterator = null;
+        if (employeeId != 0) {
+            jobIterator = jobRepository.findJobsByEmployee(employeeId);
+        } else {
+            jobIterator = jobRepository.findAll();
+        }
+        Iterator<Job> iterator = jobIterator.iterator();
+        while (iterator.hasNext()) {
+            jobs.add(iterator.next());
+        }
+        return jobs;
+    }
+
+    public void createJob(Job job) {
+        //all created job should be set status=0
+        job.setStatus(0);
+        String start_time = job.getStart_time();
+        String due_time = job.getDue_time();
+        job.setPlanned_cost_time(TimeUtils.getDateDiffHours(start_time,due_time,"yyyy-MM-dd"));
+        jobRepository.save(job);
     }
 
     private ArrayList<ResponseAircraft> getResponseAircrafts(Iterable<Aircraft> allAircraft) {

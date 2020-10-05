@@ -78,13 +78,13 @@ public class TimeUtils {
 
     public static double getDateDiffHours(String startTime, String endTime, String format) {
         SimpleDateFormat sd = new SimpleDateFormat(format);
-        long nd = 1000 * 24 * 60 * 60;//一天的毫秒数
+//        long nd = 1000 * 24 * 60 * 60;//一天的毫秒数
         double nh = 1000 * 60 * 60.0;//一小时的毫秒数
         long diff;
         //获得两个时间的毫秒时间差异
         try {
             diff = sd.parse(endTime).getTime() - sd.parse(startTime).getTime();
-            double hour = diff % nd / nh;//计算差多少小时
+            double hour = diff /  nh;//计算差多少小时
             NumberFormat nf=new DecimalFormat( "0.0 ");
             hour = Double.parseDouble(nf.format(hour));
             System.out.println("时间相差："+hour);

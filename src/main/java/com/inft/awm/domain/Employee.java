@@ -43,6 +43,7 @@ public class Employee {
 
     private String birth_year;
 
+    //-- 0: Engineer   1: Manager  99:Super Administrator
     private Integer title;
 
     private String portrait_url;
