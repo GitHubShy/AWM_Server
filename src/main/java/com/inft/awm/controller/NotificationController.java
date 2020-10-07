@@ -1,5 +1,6 @@
 package com.inft.awm.controller;
 
+import com.inft.awm.custom.NeedToken;
 import com.inft.awm.domain.Customer;
 import com.inft.awm.domain.Employee;
 import com.inft.awm.mail.MailServiceImp;
@@ -38,10 +39,11 @@ public class NotificationController {
 
 
     @PostMapping(value = "/resetPassword")
-    public SimpleResult getAllCustomer(String account_name,Integer type) {
+    @NeedToken
+    public SimpleResult getAllCustomer(String account_name, Integer type) {
         String email;
         String subject = "Reset Password";
-        if(type == 0) {
+        if (type == 0) {
             final Employee employee = employeeRepository.findByEmployeeName(account_name);
             if (employee == null) {
                 throw new RuntimeException("This employee does not exist");
@@ -56,8 +58,40 @@ public class NotificationController {
                 email = customer.getEmail();
             }
         }
-        String content = "Your new password is  "+StringUtils.randomStrings(8) + "  Please log in by this new password and go to profile to set a new password";
-        mailServiceImp.sendSimpleMail(email,subject, content);
+        String content = "Your new password is  " + StringUtils.randomStrings(8) + "  Please log in by this new password and go to profile to set a new password";
+        mailServiceImp.sendSimpleMail(email, subject, content);
         return new SimpleResult("A email has been sent to your register email,please follow the instruction to reset your password");
+    }
+
+    /**
+     * @param receiverType 0=customer, 1=staff
+     * @param receiverName
+     * @param subject
+     * @param content
+     * @return
+     */
+    @PostMapping(value = "/sendMessage")
+    @NeedToken
+    public SimpleResult sendMessage(int receiverType, String receiverName, String subject, String content) {
+        String email;
+        String s = subject;
+        String c = content;
+        if (receiverType == 0) {
+            Customer customer = customerRepository.findByUserName(receiverName);
+            if (customer == null) {
+                throw new RuntimeException("This account does not exist");
+            } else {
+                email = customer.getEmail();
+            }
+        } else {
+            final Employee employee = employeeRepository.findByEmployeeName(receiverName);
+            if (employee == null) {
+                throw new RuntimeException("This employee does not exist");
+            } else {
+                email = employee.getEmail();
+            }
+        }
+        mailServiceImp.sendSimpleMail(email, subject, content);
+        return new SimpleResult("success");
     }
 }
