@@ -1,7 +1,7 @@
 package com.inft.awm.controller;
 
+import com.inft.awm.custom.NeedToken;
 import com.inft.awm.domain.Customer;
-import com.inft.awm.mail.MailServiceImp;
 import com.inft.awm.response.ResponseLogin;
 import com.inft.awm.response.SimpleResult;
 import com.inft.awm.service.CustomerService;
@@ -46,4 +46,11 @@ public class CustomerController {
     public ResponseLogin login(String account_name,String password) {
         return customerService.login(account_name,password);
     }
+    @PostMapping(value = "/getCustomer")
+    @NeedToken
+    public Customer getCustomer(Integer id) {
+        Customer customer = customerService.findCustomerById(id);
+        return customer;
+    }
+
 }
