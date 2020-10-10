@@ -39,15 +39,17 @@ public class NotificationController {
 
 
     @PostMapping(value = "/resetPassword")
-    @NeedToken
-    public SimpleResult getAllCustomer(String account_name, Integer type) {
+    public SimpleResult resetPassword(String account_name, Integer type) {
         String email;
         String subject = "Reset Password";
+        String newPassword = StringUtils.randomStrings(8);
         if (type == 0) {
             final Employee employee = employeeRepository.findByEmployeeName(account_name);
             if (employee == null) {
                 throw new RuntimeException("This employee does not exist");
             } else {
+                employee.setPassword(newPassword);
+                employeeRepository.save(employee);
                 email = employee.getEmail();
             }
         } else {
@@ -55,10 +57,12 @@ public class NotificationController {
             if (customer == null) {
                 throw new RuntimeException("This account does not exist");
             } else {
+                customer.setPassword(newPassword);
+                customerRepository.save(customer);
                 email = customer.getEmail();
             }
         }
-        String content = "Your new password is  " + StringUtils.randomStrings(8) + "  Please log in by this new password and go to profile to set a new password";
+        String content = "Your new password is  " + newPassword + "  Please log in by this new password and go to profile to set a new password";
         mailServiceImp.sendSimpleMail(email, subject, content);
         return new SimpleResult("A email has been sent to your register email,please follow the instruction to reset your password");
     }
