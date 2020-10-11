@@ -4,6 +4,7 @@ import com.inft.awm.custom.NeedToken;
 import com.inft.awm.domain.Aircraft;
 import com.inft.awm.domain.Component;
 import com.inft.awm.domain.Job;
+import com.inft.awm.domain.Template;
 import com.inft.awm.domain.response.ResponseAircraft;
 import com.inft.awm.response.SimpleResult;
 import com.inft.awm.service.WorkshopService;
@@ -48,14 +49,24 @@ public class WorkshopController {
     }
 
     @PostMapping(value = "/getAllJobs")
+    @NeedToken
     public List<Job> getAllJobs(HttpServletRequest httpServletRequest, int id) {
         final List<Job> allJobs = workshopService.getAllJobs(id);
         return allJobs;
     }
 
     @PostMapping(value = "/createJob")
-    public SimpleResult createAllJobs(HttpServletRequest httpServletRequest, @RequestBody Job job) {
+    @NeedToken
+    public SimpleResult createJob(HttpServletRequest httpServletRequest, @RequestBody Job job) {
         workshopService.createJob(job);
         return new SimpleResult("Success");
+    }
+
+    @PostMapping(value = "/findAvailableTemplates")
+    @NeedToken
+    public List<Template> findAvailableTemplates(HttpServletRequest httpServletRequest) {
+        String id = (String) httpServletRequest.getAttribute("id");
+        List<Template> availableTemplates = workshopService.findAvailableTemplates(Integer.valueOf(id));
+        return availableTemplates;
     }
 }

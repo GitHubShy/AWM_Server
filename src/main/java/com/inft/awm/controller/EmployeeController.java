@@ -7,6 +7,7 @@ import com.inft.awm.domain.request.RequestDeleteEmployee;
 import com.inft.awm.domain.request.RequestGetEmployee;
 import com.inft.awm.domain.request.RequestLogin;
 import com.inft.awm.repository.EmployeeRepository;
+import com.inft.awm.response.ResponseEmployeeType;
 import com.inft.awm.response.ResponseLogin;
 import com.inft.awm.response.SimpleResult;
 import com.inft.awm.service.EmployeeService;
@@ -128,5 +129,15 @@ public class EmployeeController {
     public SimpleResult deleteEmployee(HttpServletRequest httpServletRequest, @RequestBody RequestDeleteEmployee employee) {
         employeeRepository.deleteById(employee.getId());
         return new SimpleResult("Success");
+    }
+
+    /**
+     * @param type 0: Engineer   1: Manager  99:Super Administrator
+     * @return
+     */
+    @PostMapping(value = "/getEmployeeByType")
+    @NeedToken
+    public List<ResponseEmployeeType> getEmployeeByType(Integer type) {
+        return employeeService.getEmployeeByType(type);
     }
 }

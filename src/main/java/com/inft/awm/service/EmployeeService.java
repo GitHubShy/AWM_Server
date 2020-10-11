@@ -5,8 +5,10 @@ import com.inft.awm.domain.Attendance;
 import com.inft.awm.domain.Employee;
 import com.inft.awm.repository.AttendanceRepository;
 import com.inft.awm.repository.EmployeeRepository;
+import com.inft.awm.response.ResponseEmployeeType;
 import com.inft.awm.response.ResponseLogin;
 import com.inft.awm.token.TokenUtils;
+import com.inft.awm.utils.EmployeeUtils;
 import com.inft.awm.utils.StringUtils;
 import com.inft.awm.utils.TimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -147,4 +149,21 @@ public class EmployeeService {
         }
         employeeRepository.save(originalEmployee);
     }
+
+    /**
+     * @param type  0: Engineer   1: Manager  99:Super Administrator
+     */
+    public List<ResponseEmployeeType> getEmployeeByType(int type) {
+        Iterable<Employee> employees = employeeRepository.findByType(type);
+        Iterator<Employee> iterator = employees.iterator();
+        List<ResponseEmployeeType> result = new ArrayList<>();
+        while (iterator.hasNext()) {
+            Employee employee = iterator.next();
+            String name = employee.getFirst_name() + " " + employee.getSurname();
+            ResponseEmployeeType data = new ResponseEmployeeType(employee.getId(),name, EmployeeUtils.getEmployeeType(employee.getTitle()));
+            result.add(data);
+        }
+        return result;
+    }
+
 }

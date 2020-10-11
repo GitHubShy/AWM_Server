@@ -13,6 +13,7 @@ public class TimeUtils {
         TimeUtils.getCurrentDateTime();
         TimeUtils.getCurrentDate();
         TimeUtils.getCurrentTime();
+        TimeUtils.isOverDue("2020-10-11","yyyy-MM-dd");
     }
 
     public static String getCurrentDateTime() {
@@ -116,6 +117,20 @@ public class TimeUtils {
         System.out.println("after:" + sd.format(date));  //显示更新后的日期
         return sd.format(date);
 
+    }
+
+    public static boolean isOverDue(String dueTime,String format) {
+        SimpleDateFormat sd = new SimpleDateFormat(format);
+        Date date = null;
+        long diff =0;
+        try {
+            date = sd.parse(dueTime);
+            diff = sd.parse(dueTime).getTime() - new Date().getTime();
+            System.out.println("1111111111111111111111" + diff);  //显示更新后的日期
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return diff <= 0;
     }
 
 

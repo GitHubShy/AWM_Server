@@ -15,4 +15,11 @@ public interface EmployeeRepository extends CrudRepository<Employee,Integer> {
     @Query(value = "select * from employee where id = ?1",nativeQuery = true)
     Employee findByEmployeeId(@Param("id") Integer id);
 
+    /**
+     * @param id  0: Engineer   1: Manager  99:Super Administrator
+     * @return
+     */
+    @Query(value = "select * from employee where title = ?1",nativeQuery = true)
+    Iterable<Employee> findByType(@Param("id") Integer id);
+
 }
