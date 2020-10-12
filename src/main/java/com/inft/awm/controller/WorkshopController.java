@@ -87,6 +87,14 @@ public class WorkshopController {
         return new SimpleResult("Success");
     }
 
+    @PostMapping(value = "/deleteSubTask")
+    @NeedToken
+    public SimpleResult deleteSubTask(Integer id) {
+        workshopService.deleteSubTask(id);
+        return new SimpleResult("Success");
+    }
+
+
     @PostMapping(value = "/findAvailableTemplates")
     @NeedToken
     public List<Template> findAvailableTemplates(HttpServletRequest httpServletRequest) {

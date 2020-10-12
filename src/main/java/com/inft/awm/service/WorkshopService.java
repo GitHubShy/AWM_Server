@@ -266,6 +266,10 @@ public class WorkshopService {
         subTaskRepository.save(subTask);
     }
 
+    public void deleteSubTask(Integer subTaskId) {
+        subTaskRepository.deleteById(subTaskId);
+    }
+
     public List<SubTaskType> getAllSubTaskType() {
         Iterable<SubTaskType> all = subTaskTypeRepository.findAll();
         Iterator<SubTaskType> iterator = all.iterator();
