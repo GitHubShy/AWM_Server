@@ -59,6 +59,13 @@ public class WorkshopController {
         return subTasksForJob;
     }
 
+    @PostMapping(value = "/getAllSubTaskType")
+    @NeedToken
+    public List<SubTaskType> getAllSubTaskType() {
+        List<SubTaskType> subTasksForJob = workshopService.getAllSubTaskType();
+        return subTasksForJob;
+    }
+
     @PostMapping(value = "/updateSubTask")
     @NeedToken
     public SimpleResult updateSubTask(HttpServletRequest httpServletRequest, @RequestBody SubTask subTask) {
@@ -70,6 +77,13 @@ public class WorkshopController {
     @NeedToken
     public SimpleResult createJob(HttpServletRequest httpServletRequest, @RequestBody Job job) {
         workshopService.createJob(job);
+        return new SimpleResult("Success");
+    }
+
+    @PostMapping(value = "/createSubTask")
+    @NeedToken
+    public SimpleResult createSubTask(HttpServletRequest httpServletRequest, @RequestBody SubTask subTask) {
+        workshopService.createSubTask(subTask);
         return new SimpleResult("Success");
     }
 

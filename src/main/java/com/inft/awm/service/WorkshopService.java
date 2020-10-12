@@ -217,8 +217,8 @@ public class WorkshopService {
             SubTask subTask = iterator.next();
 
             //find the sub task type
-            SubTaskType subTaskType = subTaskTypeRepository.findSubTaskType(subTask.getId());
-            subTask.setDescription(subTaskType.getDescription());
+            SubTaskType subTaskType = subTaskTypeRepository.findSubTaskType(subTask.getSub_task_type_id());
+            subTask.setDescription(subTaskType.getTitle());
 
             //find employee name
             for (ResponseEmployeeType employee:allEmployees) {
@@ -259,9 +259,23 @@ public class WorkshopService {
 
         }
         subTaskRepository.save(originalSubTask);
-
     }
 
+    public void createSubTask(SubTask subTask) {
+        subTask.setPlanned_cost_time(TimeUtils.getDateDiffHours(subTask.getStart_time(), subTask.getDue_time(), "yyyy-MM-dd"));
+        subTaskRepository.save(subTask);
+    }
+
+    public List<SubTaskType> getAllSubTaskType() {
+        Iterable<SubTaskType> all = subTaskTypeRepository.findAll();
+        Iterator<SubTaskType> iterator = all.iterator();
+        ArrayList<SubTaskType> result = new ArrayList<>();
+        while (iterator.hasNext()) {
+            SubTaskType subTaskType = iterator.next();
+            result.add(subTaskType);
+        }
+        return result;
+    }
 
 
 }

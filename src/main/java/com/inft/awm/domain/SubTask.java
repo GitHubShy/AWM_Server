@@ -23,13 +23,16 @@ public class SubTask {
     @NotBlank(message = "The due_time cannot be empty")
     private String due_time;
 
+    @NotNull(message = "The due_time cannot be empty")
+    private Integer employee_id;
+
+
     private String  end_time;
 
     private Double  planned_cost_time;
 
     private Double  actual_cost_time;
 
-    private Integer employee_id;
 
     private Integer aircraft_id;
 
