@@ -31,10 +31,37 @@ public class SubTask {
 
     private Integer employee_id;
 
+    private Integer aircraft_id;
+
+    @Transient
+    private String description;
+
+    @Transient
+    private String employee_name;
+
+    public String getEmployee_name() {
+        return employee_name;
+    }
+
+    public void setEmployee_name(String employee_name) {
+        this.employee_name = employee_name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     /* 0:created 1:started 2: approach due 3:over due 4：Need confirm finished5:finished*/
     private Integer status;
 
-    public SubTask( Integer job_id, Integer sub_task_type_id, String start_time, String due_time, Double planned_cost_time, Integer employee_id, Integer status) {
+    public SubTask() {
+    }
+
+    public SubTask(Integer job_id, Integer sub_task_type_id, String start_time, String due_time, Double planned_cost_time, Integer employee_id, Integer status, Integer aircraftId) {
         this.job_id = job_id;
         this.sub_task_type_id = sub_task_type_id;
         this.start_time = start_time;
@@ -42,6 +69,15 @@ public class SubTask {
         this.planned_cost_time = planned_cost_time;
         this.employee_id = employee_id;
         this.status = status;
+        this.aircraft_id = aircraftId;
+    }
+
+    public Integer getAircraft_id() {
+        return aircraft_id;
+    }
+
+    public void setAircraft_id(Integer aircraft_id) {
+        this.aircraft_id = aircraft_id;
     }
 
     public Integer getId() {

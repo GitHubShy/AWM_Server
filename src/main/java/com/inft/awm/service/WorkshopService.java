@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class WorkshopService {
@@ -36,6 +37,10 @@ public class WorkshopService {
 
     @Autowired
     SubTaskRepository subTaskRepository;
+
+    @Autowired
+    SubTaskTypeRepository subTaskTypeRepository;
+
 
     public Aircraft registerAircraft(Aircraft aircraft) {
         String nextTime = TimeUtils.addDateHours(aircraft.getLast_modify_time(), aircraft.getMaintenance_cycle(), "yyyy-MM-dd");
@@ -145,7 +150,7 @@ public class WorkshopService {
         while(iterator.hasNext()) {
             TemplateTask subTaskId = iterator.next();
             SubTask subTask = new SubTask(jobSaved.getId(),subTaskId.getSub_task_type_id(),jobSaved.getStart_time(),jobSaved.getDue_time(),
-                    TimeUtils.getDateDiffHours(start_time, due_time, "yyyy-MM-dd"),jobSaved.getEmployee_id(),0);
+                    TimeUtils.getDateDiffHours(start_time, due_time, "yyyy-MM-dd"),jobSaved.getEmployee_id(),0,jobSaved.getAircraft_id());
             subTaskList.add(subTask);
         }
         //Save all sub tasks
@@ -199,6 +204,64 @@ public class WorkshopService {
         }
         return templates;
     }
+
+    public List<SubTask> getSubTasksForJob(Integer jobId) {
+        final Iterable<SubTask> subTasksIterable = subTaskRepository.findSubTasksByJob(jobId);
+        ArrayList<SubTask> subTasks = new ArrayList<>();
+
+        //Used for match employee name with employee id
+        List<ResponseEmployeeType> allEmployees = employeeService.getEmployeeByType(-1);
+
+        Iterator<SubTask> iterator = subTasksIterable.iterator();
+        while (iterator.hasNext()) {
+            SubTask subTask = iterator.next();
+
+            //find the sub task type
+            SubTaskType subTaskType = subTaskTypeRepository.findSubTaskType(subTask.getId());
+            subTask.setDescription(subTaskType.getDescription());
+
+            //find employee name
+            for (ResponseEmployeeType employee:allEmployees) {
+                if (subTask.getEmployee_id() == employee.getId()) {
+                    subTask.setEmployee_name(employee.getName());
+                    break;
+                }
+            }
+            subTasks.add(subTask);
+        }
+        return subTasks;
+    }
+
+    public void updateSubTask(SubTask subTask) {
+        final Integer subTaskId = subTask.getId();
+        final SubTask originalSubTask = subTaskRepository.findById(subTaskId).get();
+        if (originalSubTask == null) {
+            throw new RuntimeException("This sub do not exist in the database");
+        } else {
+            //update employee
+            if (subTask.getEmployee_id() != null && subTask.getEmployee_id() != 0) {
+                originalSubTask.setEmployee_id(subTask.getEmployee_id());
+            }
+            //update employee
+            if (subTask.getEmployee_id() != null && subTask.getEmployee_id() != 0) {
+                originalSubTask.setEmployee_id(subTask.getEmployee_id());
+            }
+            //update start time
+            if (!StringUtils.isEmpty(subTask.getStart_time())) {
+                originalSubTask.setStart_time(subTask.getStart_time());
+            }
+
+            //update due time
+            if (!StringUtils.isEmpty(subTask.getDue_time())) {
+                originalSubTask.setDue_time(subTask.getDue_time());
+            }
+            originalSubTask.setPlanned_cost_time(TimeUtils.getDateDiffHours(originalSubTask.getStart_time(), originalSubTask.getDue_time(), "yyyy-MM-dd"));
+
+        }
+        subTaskRepository.save(originalSubTask);
+
+    }
+
 
 
 }

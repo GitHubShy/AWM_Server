@@ -151,10 +151,15 @@ public class EmployeeService {
     }
 
     /**
-     * @param type  0: Engineer   1: Manager  99:Super Administrator
+     * @param type -1:all 0: Engineer   1: Manager  99:Super Administrator
      */
     public List<ResponseEmployeeType> getEmployeeByType(int type) {
-        Iterable<Employee> employees = employeeRepository.findByType(type);
+        Iterable<Employee> employees;
+        if (type == -1) {
+            employees = employeeRepository.findAll();
+        } else{
+            employees = employeeRepository.findByType(type);
+        }
         Iterator<Employee> iterator = employees.iterator();
         List<ResponseEmployeeType> result = new ArrayList<>();
         while (iterator.hasNext()) {

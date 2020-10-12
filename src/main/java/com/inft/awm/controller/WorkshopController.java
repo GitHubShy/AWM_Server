@@ -1,10 +1,7 @@
 package com.inft.awm.controller;
 
 import com.inft.awm.custom.NeedToken;
-import com.inft.awm.domain.Aircraft;
-import com.inft.awm.domain.Component;
-import com.inft.awm.domain.Job;
-import com.inft.awm.domain.Template;
+import com.inft.awm.domain.*;
 import com.inft.awm.domain.response.ResponseAircraft;
 import com.inft.awm.response.SimpleResult;
 import com.inft.awm.service.WorkshopService;
@@ -53,6 +50,20 @@ public class WorkshopController {
     public List<Job> getAllJobs(HttpServletRequest httpServletRequest, int id) {
         final List<Job> allJobs = workshopService.getAllJobs(id);
         return allJobs;
+    }
+
+    @PostMapping(value = "/getAllSubTasks")
+    @NeedToken
+    public List<SubTask> getAllSubTasks(HttpServletRequest httpServletRequest, int id) {
+        List<SubTask> subTasksForJob = workshopService.getSubTasksForJob(id);
+        return subTasksForJob;
+    }
+
+    @PostMapping(value = "/updateSubTask")
+    @NeedToken
+    public SimpleResult updateSubTask(HttpServletRequest httpServletRequest, @RequestBody SubTask subTask) {
+        workshopService.updateSubTask(subTask);
+        return new SimpleResult("Success");
     }
 
     @PostMapping(value = "/createJob")
