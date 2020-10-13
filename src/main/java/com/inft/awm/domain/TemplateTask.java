@@ -13,6 +13,14 @@ public class TemplateTask {
 
     private Integer sub_task_type_id;
 
+    public TemplateTask() {
+    }
+
+    public TemplateTask(Integer template_id, Integer sub_task_type_id) {
+        this.template_id = template_id;
+        this.sub_task_type_id = sub_task_type_id;
+    }
+
     public Integer getId() {
         return id;
     }

@@ -1,6 +1,7 @@
 package com.inft.awm.service;
 
 import com.inft.awm.domain.*;
+import com.inft.awm.domain.request.RequestCreateTemplate;
 import com.inft.awm.domain.response.ResponseAircraft;
 import com.inft.awm.repository.*;
 import com.inft.awm.response.ResponseEmployeeType;
@@ -147,10 +148,10 @@ public class WorkshopService {
         Iterator<TemplateTask> iterator = subTaskTypes.iterator();
         //List used to save all subTask
         ArrayList<SubTask> subTaskList = new ArrayList<>();
-        while(iterator.hasNext()) {
+        while (iterator.hasNext()) {
             TemplateTask subTaskId = iterator.next();
-            SubTask subTask = new SubTask(jobSaved.getId(),subTaskId.getSub_task_type_id(),jobSaved.getStart_time(),jobSaved.getDue_time(),
-                    TimeUtils.getDateDiffHours(start_time, due_time, "yyyy-MM-dd"),jobSaved.getEmployee_id(),0,jobSaved.getAircraft_id());
+            SubTask subTask = new SubTask(jobSaved.getId(), subTaskId.getSub_task_type_id(), jobSaved.getStart_time(), jobSaved.getDue_time(),
+                    TimeUtils.getDateDiffHours(start_time, due_time, "yyyy-MM-dd"), jobSaved.getEmployee_id(), 0, jobSaved.getAircraft_id());
             subTaskList.add(subTask);
         }
         //Save all sub tasks
@@ -186,7 +187,7 @@ public class WorkshopService {
     }
 
     /**
-     * @param employeeId  0:return system default templates   otherwise return templates belongs to the employee
+     * @param employeeId 0:return system default templates   otherwise return templates belongs to the employee
      * @return
      */
     public List<Template> findAvailableTemplates(Integer employeeId) {
@@ -221,7 +222,7 @@ public class WorkshopService {
             subTask.setDescription(subTaskType.getTitle());
 
             //find employee name
-            for (ResponseEmployeeType employee:allEmployees) {
+            for (ResponseEmployeeType employee : allEmployees) {
                 if (subTask.getEmployee_id() == employee.getId()) {
                     subTask.setEmployee_name(employee.getName());
                     break;
@@ -279,6 +280,30 @@ public class WorkshopService {
             result.add(subTaskType);
         }
         return result;
+    }
+
+    public void createNewTemplate(RequestCreateTemplate newTemplate) {
+
+        ArrayList<Integer> subTaskTypeIds = newTemplate.getSubTaskTypeIds();
+
+        if (subTaskTypeIds == null || subTaskTypeIds.size() == 0) {
+            throw new RuntimeException("No sub tasks provided");
+        }
+
+        Template template = new Template();
+        template.setTitle(newTemplate.getTitle());
+        template.setDescription(newTemplate.getDescription());
+        template.setEmployee_id(newTemplate.getEmployee_id());
+        final Template savedTemplate = templateRepository.save(template);
+
+        ArrayList<TemplateTask> templateTasks = new ArrayList<>();
+
+        for (Integer id : subTaskTypeIds) {
+            TemplateTask tt = new TemplateTask(savedTemplate.getId(),id);
+            templateTasks.add(tt);
+        }
+        templateTaskRepository.saveAll(templateTasks);
+
     }
 
 

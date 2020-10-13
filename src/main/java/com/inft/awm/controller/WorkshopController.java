@@ -2,6 +2,7 @@ package com.inft.awm.controller;
 
 import com.inft.awm.custom.NeedToken;
 import com.inft.awm.domain.*;
+import com.inft.awm.domain.request.RequestCreateTemplate;
 import com.inft.awm.domain.response.ResponseAircraft;
 import com.inft.awm.response.SimpleResult;
 import com.inft.awm.service.WorkshopService;
@@ -84,6 +85,13 @@ public class WorkshopController {
     @NeedToken
     public SimpleResult createSubTask(HttpServletRequest httpServletRequest, @RequestBody SubTask subTask) {
         workshopService.createSubTask(subTask);
+        return new SimpleResult("Success");
+    }
+
+    @PostMapping(value = "/createNewTemplate")
+    @NeedToken
+    public SimpleResult createNewTemplate(@RequestBody RequestCreateTemplate template) {
+        workshopService.createNewTemplate(template);
         return new SimpleResult("Success");
     }
 
