@@ -10,8 +10,8 @@ public interface SubTaskRepository extends CrudRepository<SubTask,Integer> {
 
     @Query(value = "select * from sub_task where job_id = ?1",nativeQuery = true)
     Iterable<SubTask> findSubTasksByJob(@Param("job_id") Integer job_id);
-//
-//    @Query(value = "select * from job where id = ?1",nativeQuery = true)
-//    Iterable<Job> findJob(@Param("id") Integer id);
+
+    @Query(value = "select * from sub_task where employee_id = ?1",nativeQuery = true)
+    Iterable<SubTask> findSubTaskByEmployee(@Param("employee_id") Integer id);
 
 }

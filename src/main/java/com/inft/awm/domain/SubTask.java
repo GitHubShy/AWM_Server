@@ -33,6 +33,7 @@ public class SubTask {
 
     private Double  actual_cost_time;
 
+    private int percentage;
 
     private Integer aircraft_id;
 
@@ -73,6 +74,14 @@ public class SubTask {
         this.employee_id = employee_id;
         this.status = status;
         this.aircraft_id = aircraftId;
+    }
+
+    public Integer getPercentage() {
+        return percentage;
+    }
+
+    public void setPercentage(Integer percentage) {
+        this.percentage = percentage;
     }
 
     public Integer getAircraft_id() {

@@ -233,11 +233,38 @@ public class WorkshopService {
         return subTasks;
     }
 
+    public List<SubTask> getTasksForEmployee(Integer employeeId) {
+        final Iterable<SubTask> subTasksIterable = subTaskRepository.findSubTaskByEmployee(employeeId);
+        ArrayList<SubTask> subTasks = new ArrayList<>();
+
+        //Used for match employee name with employee id
+        List<ResponseEmployeeType> allEmployees = employeeService.getEmployeeByType(-1);
+
+        Iterator<SubTask> iterator = subTasksIterable.iterator();
+        while (iterator.hasNext()) {
+            SubTask subTask = iterator.next();
+
+            //find the sub task type
+            SubTaskType subTaskType = subTaskTypeRepository.findSubTaskType(subTask.getSub_task_type_id());
+            subTask.setDescription(subTaskType.getTitle());
+
+            //find employee name
+            for (ResponseEmployeeType employee : allEmployees) {
+                if (subTask.getEmployee_id() == employee.getId()) {
+                    subTask.setEmployee_name(employee.getName());
+                    break;
+                }
+            }
+            subTasks.add(subTask);
+        }
+        return subTasks;
+    }
+
     public void updateSubTask(SubTask subTask) {
         final Integer subTaskId = subTask.getId();
         final SubTask originalSubTask = subTaskRepository.findById(subTaskId).get();
         if (originalSubTask == null) {
-            throw new RuntimeException("This sub do not exist in the database");
+            throw new RuntimeException("This sub task do not exist in the database");
         } else {
             //update employee
             if (subTask.getEmployee_id() != null && subTask.getEmployee_id() != 0) {
@@ -256,6 +283,35 @@ public class WorkshopService {
             if (!StringUtils.isEmpty(subTask.getDue_time())) {
                 originalSubTask.setDue_time(subTask.getDue_time());
             }
+
+            //update status
+            if (subTask.getStatus() != null && subTask.getStatus() != 0) {
+
+                //If user want to set the status from 'over due' to 'Started', reject.
+                if (originalSubTask.getStatus() == 2 && subTask.getStatus() < 2) {
+                    throw new RuntimeException("Can not set from 'over due' to 'Started'");
+                }
+
+                originalSubTask.setStatus(subTask.getStatus());
+
+            }
+
+            //Update percentage
+            if (subTask.getPercentage() != null) {
+                if (originalSubTask.getStatus() == 0) {
+                    throw new RuntimeException("Please start the task firstly");
+                }
+                if (subTask.getPercentage() > 100 || subTask.getPercentage() < 0) {
+                    throw new RuntimeException("Please input the percentage between 0-100");
+                }
+                originalSubTask.setPercentage(subTask.getPercentage());
+            }
+
+
+            if (originalSubTask.getStatus() == 3) {
+                originalSubTask.setPercentage(100);
+            }
+
             originalSubTask.setPlanned_cost_time(TimeUtils.getDateDiffHours(originalSubTask.getStart_time(), originalSubTask.getDue_time(), "yyyy-MM-dd"));
 
         }

@@ -60,6 +60,13 @@ public class WorkshopController {
         return subTasksForJob;
     }
 
+    @PostMapping(value = "/getTasksForEmployee")
+    @NeedToken
+    public List<SubTask> getTasksForEmployee(HttpServletRequest httpServletRequest, int employeeId) {
+        List<SubTask> subTasksForJob = workshopService.getTasksForEmployee(employeeId);
+        return subTasksForJob;
+    }
+
     @PostMapping(value = "/getAllSubTaskType")
     @NeedToken
     public List<SubTaskType> getAllSubTaskType() {
