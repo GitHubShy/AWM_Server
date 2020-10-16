@@ -42,8 +42,19 @@ public class Job {
     @Transient
     private String employee_name;
 
+    @Transient
+    private String template_title;
+
     /* 0:created 1:started 2: approach due 3:over due 4：Need confirm finished5:finished*/
     private Integer status;
+
+    public String getTemplate_title() {
+        return template_title;
+    }
+
+    public void setTemplate_title(String template_title) {
+        this.template_title = template_title;
+    }
 
     public Integer getId() {
         return id;

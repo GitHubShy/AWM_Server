@@ -121,13 +121,18 @@ public class WorkshopService {
 
             for (Template template : allTemplates) {
                 if (template.getId() == job.getTemplate_id()) {
-                    job.setDescription(template.getTitle());
+                    job.setTemplate_title(template.getTitle());
                 }
             }
 
             jobs.add(job);
         }
         return jobs;
+    }
+
+    public Job getJob(Integer jobId) {
+        Job job = jobRepository.findById(jobId).get();
+        return job;
     }
 
     public void createJob(Job job) {
@@ -140,6 +145,11 @@ public class WorkshopService {
         job.setPlanned_cost_time(TimeUtils.getDateDiffHours(start_time, due_time, "yyyy-MM-dd"));
 
         Job jobSaved = jobRepository.save(job);
+
+        //change the related aircraft status to maintaining
+        Aircraft aircraft = aircraftRepository.findById(jobSaved.getAircraft_id()).get();
+        aircraft.setStatus(2);
+        aircraftRepository.save(aircraft);
 
         Integer template_id = job.getTemplate_id();
         //Query Corresponding sub-task-types for a template
@@ -154,6 +164,7 @@ public class WorkshopService {
                     TimeUtils.getDateDiffHours(start_time, due_time, "yyyy-MM-dd"), jobSaved.getEmployee_id(), 0, jobSaved.getAircraft_id());
             subTaskList.add(subTask);
         }
+
         //Save all sub tasks
         subTaskRepository.saveAll(subTaskList);
     }
@@ -262,6 +273,10 @@ public class WorkshopService {
 
     public void updateSubTask(SubTask subTask) {
         final Integer subTaskId = subTask.getId();
+        final Integer job_id = subTask.getJob_id();
+        Job parentJob = jobRepository.findById(job_id).get();
+        //other sub tasks that belong to the same job
+        Iterable<SubTask> subTasksByJob = subTaskRepository.findSubTasksByJob(job_id);
         final SubTask originalSubTask = subTaskRepository.findById(subTaskId).get();
         if (originalSubTask == null) {
             throw new RuntimeException("This sub task do not exist in the database");
@@ -284,6 +299,9 @@ public class WorkshopService {
                 originalSubTask.setDue_time(subTask.getDue_time());
             }
 
+            //update planned hours
+            originalSubTask.setPlanned_cost_time(TimeUtils.getDateDiffHours(subTask.getStart_time(), subTask.getDue_time(), "yyyy-MM-dd"));
+
             //update status
             if (subTask.getStatus() != null && subTask.getStatus() != 0) {
 
@@ -294,17 +312,41 @@ public class WorkshopService {
 
                 originalSubTask.setStatus(subTask.getStatus());
 
+                //If this sub task is finished, check if all the sub tasks that belongs to the same parent job are all finished
+                // If yes, set the parent job status to "need confirm"
+                boolean isAllFinished = true;
+                if (originalSubTask.getStatus() == 5) {
+                    Iterator<SubTask> iterator = subTasksByJob.iterator();
+                    while (iterator.hasNext()) {
+                        SubTask next = iterator.next();
+                        if (next.getStatus() != 5) {
+                            isAllFinished = false;
+                            break;
+                        }
+                    }
+                    if (isAllFinished) {
+                        parentJob.setStatus(4);
+                    }
+                    originalSubTask.setPercentage(100);
+                } else if (originalSubTask.getStatus() == 1) {//If this sub task is started, set parent job started
+                    parentJob.setStatus(1);
+                }
+
             }
 
             //Update percentage
-            if (subTask.getPercentage() != null) {
+            if (subTask.getPercentage() != null && subTask.getPercentage() != originalSubTask.getPercentage()) {
                 if (originalSubTask.getStatus() == 0) {
                     throw new RuntimeException("Please start the task firstly");
                 }
                 if (subTask.getPercentage() > 100 || subTask.getPercentage() < 0) {
                     throw new RuntimeException("Please input the percentage between 0-100");
                 }
-                originalSubTask.setPercentage(subTask.getPercentage());
+                if (originalSubTask.getStatus() ==5) {
+                    originalSubTask.setPercentage(100);
+                } else {
+                    originalSubTask.setPercentage(subTask.getPercentage());
+                }
             }
 
 
@@ -316,6 +358,20 @@ public class WorkshopService {
 
         }
         subTaskRepository.save(originalSubTask);
+    }
+
+    public void updateJob(Job job) {
+        Job savedJob = jobRepository.findById(job.getId()).get();
+
+        if (job.getStatus() != savedJob.getStatus()) {
+            if (job.getStatus() == 5) {//want close the job
+                if (savedJob.getStatus() != 4) {
+                    throw new RuntimeException("All sub tasks have not been finished");
+                }
+            }
+            savedJob.setStatus(job.getStatus());
+        }
+        jobRepository.save(savedJob);
     }
 
     public void createSubTask(SubTask subTask) {

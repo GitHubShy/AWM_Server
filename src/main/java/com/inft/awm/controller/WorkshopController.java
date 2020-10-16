@@ -53,6 +53,12 @@ public class WorkshopController {
         return allJobs;
     }
 
+    @PostMapping(value = "/getJob")
+    @NeedToken
+    public Job getJob(int id) {
+        return workshopService.getJob(id);
+    }
+
     @PostMapping(value = "/getAllSubTasks")
     @NeedToken
     public List<SubTask> getAllSubTasks(HttpServletRequest httpServletRequest, int id) {
@@ -76,8 +82,15 @@ public class WorkshopController {
 
     @PostMapping(value = "/updateSubTask")
     @NeedToken
-    public SimpleResult updateSubTask(HttpServletRequest httpServletRequest, @RequestBody SubTask subTask) {
+    public SimpleResult updateSubTask(@RequestBody SubTask subTask) {
         workshopService.updateSubTask(subTask);
+        return new SimpleResult("Success");
+    }
+
+    @PostMapping(value = "/updateJob")
+    @NeedToken
+    public SimpleResult updateJob(@RequestBody Job job) {
+        workshopService.updateJob(job);
         return new SimpleResult("Success");
     }
 

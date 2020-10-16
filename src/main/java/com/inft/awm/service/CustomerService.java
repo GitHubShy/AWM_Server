@@ -3,6 +3,7 @@ package com.inft.awm.service;
 
 import com.inft.awm.domain.Customer;
 import com.inft.awm.repository.CustomerRepository;
+import com.inft.awm.response.ResponseCustomerLogin;
 import com.inft.awm.response.ResponseLogin;
 import com.inft.awm.token.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class CustomerService {
         customerRepository.save(customer);
     }
 
-    public ResponseLogin login(String account_name,String password) {
+    public ResponseCustomerLogin login(String account_name,String password) {
 
         Customer existCustomer = customerRepository.findByUserName(account_name);
 
@@ -35,7 +36,7 @@ public class CustomerService {
                 throw new RuntimeException("The password is wrong");
             } else {
                 String token = TokenUtils.createCustomerToken(existCustomer);
-                return new ResponseLogin(token);
+                return new ResponseCustomerLogin(token,existCustomer);
             }
         }
     }
