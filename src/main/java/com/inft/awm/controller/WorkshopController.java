@@ -130,4 +130,18 @@ public class WorkshopController {
         List<Template> availableTemplates = workshopService.findAvailableTemplates(Integer.valueOf(id));
         return availableTemplates;
     }
+
+    @PostMapping(value = "/getComments")
+    @NeedToken
+    public List<Comment> getComments(Integer job_id) {
+        List<Comment> comments = workshopService.getCommentsForJob(job_id);
+        return comments;
+    }
+
+    @PostMapping(value = "/createComment")
+    @NeedToken
+    public SimpleResult createComment(HttpServletRequest httpServletRequest,@RequestBody Comment comment) {
+        workshopService.createComment(httpServletRequest,comment);
+        return new SimpleResult("Success");
+    }
 }

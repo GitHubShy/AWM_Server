@@ -8,7 +8,6 @@ public class Template {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
     /**
      * IF employee_id = 0, this means this template is a system default template
      */
@@ -24,6 +23,7 @@ public class Template {
      * template description
      */
     private String description;
+
 
     public Integer getId() {
         return id;

@@ -10,10 +10,9 @@ import com.inft.awm.utils.TimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
+import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service
 public class WorkshopService {
@@ -41,6 +40,9 @@ public class WorkshopService {
 
     @Autowired
     SubTaskTypeRepository subTaskTypeRepository;
+
+    @Autowired
+    CommentRepository commentRepository;
 
 
     public Aircraft registerAircraft(Aircraft aircraft) {
@@ -167,6 +169,19 @@ public class WorkshopService {
 
         //Save all sub tasks
         subTaskRepository.saveAll(subTaskList);
+
+        //Create a default comment
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String time = df.format(new Date());
+        Employee employee = employeeService.findEmployeeById(1);
+        Comment comment = new Comment();
+        comment.setContent_time(time);
+        comment.setJob_id(jobSaved.getId());
+        comment.setContent("Welcome to this job");
+        comment.setEmployee_id(1);
+        comment.setEmployee_name(employee.getFirst_name() + " " + employee.getSurname());
+        commentRepository.save(comment);
+
     }
 
     private ArrayList<ResponseAircraft> getResponseAircrafts(Iterable<Aircraft> allAircraft) {
@@ -416,6 +431,36 @@ public class WorkshopService {
         }
         templateTaskRepository.saveAll(templateTasks);
 
+    }
+
+    public List<Comment> getCommentsForJob(Integer id) {
+        if (id == null || id == 0) {
+            throw new RuntimeException("Job id is wrong="+id);
+        }
+        Iterable<Comment> comments = commentRepository.findCommentsByJob(id);
+        Iterator<Comment> iterator = comments.iterator();
+        ArrayList<Comment> result = new ArrayList<>();
+        while(iterator.hasNext()) {
+            Comment comment = iterator.next();
+            Integer employee_id = comment.getEmployee_id();
+            Employee employee = employeeService.findEmployeeById(employee_id);
+            comment.setEmployee_name(employee.getFirst_name()+employee.getSurname());
+            result.add(comment);
+        }
+        return result;
+    }
+
+    public void createComment(HttpServletRequest httpServletReques,Comment comment) {
+        if (comment.getEmployee_id() == null) {
+            comment.setEmployee_id(Integer.valueOf((String)httpServletReques.getAttribute("id")));
+        }
+        final Employee employee = employeeService.findEmployeeById(comment.getEmployee_id());
+        comment.setEmployee_name(employee.getFirst_name()+""+employee.getSurname());
+
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String time = df.format(new Date());
+        comment.setContent_time(time);
+        commentRepository.save(comment);
     }
 
 
