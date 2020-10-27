@@ -99,7 +99,7 @@ public class WorkshopService {
         if (employeeId != 0) {
             jobIterator = jobRepository.findJobsByEmployee(employeeId);
         } else {
-            jobIterator = jobRepository.findAll();
+            jobIterator = jobRepository.findAllDesc();
         }
         final List<Template> allTemplates = findAvailableTemplates(0);
         final List<ResponseEmployeeType> employees = employeeService.getEmployeeByType(1);
@@ -156,14 +156,25 @@ public class WorkshopService {
         Integer template_id = job.getTemplate_id();
         //Query Corresponding sub-task-types for a template
         Iterable<TemplateTask> subTaskTypes = templateTaskRepository.findSubTaskType(template_id);
-        //Create sub tasks
+
         Iterator<TemplateTask> iterator = subTaskTypes.iterator();
         //List used to save all subTask
         ArrayList<SubTask> subTaskList = new ArrayList<>();
+
+        //Create sub tasks
         while (iterator.hasNext()) {
             TemplateTask subTaskId = iterator.next();
             SubTask subTask = new SubTask(jobSaved.getId(), subTaskId.getSub_task_type_id(), jobSaved.getStart_time(), jobSaved.getDue_time(),
-                    TimeUtils.getDateDiffHours(start_time, due_time, "yyyy-MM-dd"), jobSaved.getEmployee_id(), 0, jobSaved.getAircraft_id());
+                    TimeUtils.getDateDiffHours(start_time, due_time, "yyyy-MM-dd"), jobSaved.getEmployee_id(), 0, jobSaved.getAircraft_id(),"");
+
+            SubTaskType subTaskType = subTaskTypeRepository.findSubTaskType(subTask.getSub_task_type_id());
+
+            //Set SubTask description
+            subTask.setDescription(subTaskType.getTitle());
+
+            //Set SubTask materials
+            subTask.setMaterials(subTaskType.getMaterials());
+
             subTaskList.add(subTask);
         }
 
@@ -243,9 +254,10 @@ public class WorkshopService {
         while (iterator.hasNext()) {
             SubTask subTask = iterator.next();
 
-            //find the sub task type
-            SubTaskType subTaskType = subTaskTypeRepository.findSubTaskType(subTask.getSub_task_type_id());
-            subTask.setDescription(subTaskType.getTitle());
+//            //find the sub task type
+//            SubTaskType subTaskType = subTaskTypeRepository.findSubTaskType(subTask.getSub_task_type_id());
+//            subTask.setDescription(subTaskType.getTitle());
+//            subTask.setMaterials(subTaskType.getMaterials());
 
             //find employee name
             for (ResponseEmployeeType employee : allEmployees) {
@@ -270,9 +282,10 @@ public class WorkshopService {
         while (iterator.hasNext()) {
             SubTask subTask = iterator.next();
 
-            //find the sub task type
-            SubTaskType subTaskType = subTaskTypeRepository.findSubTaskType(subTask.getSub_task_type_id());
-            subTask.setDescription(subTaskType.getTitle());
+//            //find the sub task type
+//            SubTaskType subTaskType = subTaskTypeRepository.findSubTaskType(subTask.getSub_task_type_id());
+//            subTask.setDescription(subTaskType.getTitle());
+//            subTask.setMaterials(subTaskType.getMaterials());
 
             //find employee name
             for (ResponseEmployeeType employee : allEmployees) {
@@ -315,7 +328,7 @@ public class WorkshopService {
             }
 
             //update planned hours
-            originalSubTask.setPlanned_cost_time(TimeUtils.getDateDiffHours(subTask.getStart_time(), subTask.getDue_time(), "yyyy-MM-dd"));
+            originalSubTask.setPlanned_cost_time(TimeUtils.getDateDiffHours(originalSubTask.getStart_time(), originalSubTask.getDue_time(), "yyyy-MM-dd"));
 
             //update status
             if (subTask.getStatus() != null && subTask.getStatus() != 0) {
@@ -330,7 +343,7 @@ public class WorkshopService {
                 //If this sub task is finished, check if all the sub tasks that belongs to the same parent job are all finished
                 // If yes, set the parent job status to "need confirm"
                 boolean isAllFinished = true;
-                if (originalSubTask.getStatus() == 5) {
+                if (originalSubTask.getStatus() == 5) {// finished
                     Iterator<SubTask> iterator = subTasksByJob.iterator();
                     while (iterator.hasNext()) {
                         SubTask next = iterator.next();
@@ -343,6 +356,14 @@ public class WorkshopService {
                         parentJob.setStatus(4);
                     }
                     originalSubTask.setPercentage(100);
+
+                    //set finished date
+                    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                    String endTime = df.format(new Date());
+                    originalSubTask.setEnd_time(endTime);
+
+                    //set actual finish hours
+                    originalSubTask.setActual_cost_time(TimeUtils.getDateDiffHours(originalSubTask.getStart_time(), originalSubTask.getEnd_time(), "yyyy-MM-dd"));
                 } else if (originalSubTask.getStatus() == 1) {//If this sub task is started, set parent job started
                     parentJob.setStatus(1);
                 }
@@ -369,6 +390,11 @@ public class WorkshopService {
                 originalSubTask.setPercentage(100);
             }
 
+            //update materials
+            //update due time
+            if (!StringUtils.isEmpty(subTask.getMaterials())) {
+                originalSubTask.setMaterials(subTask.getMaterials());
+            }
             originalSubTask.setPlanned_cost_time(TimeUtils.getDateDiffHours(originalSubTask.getStart_time(), originalSubTask.getDue_time(), "yyyy-MM-dd"));
 
         }
@@ -383,6 +409,13 @@ public class WorkshopService {
                 if (savedJob.getStatus() != 4) {
                     throw new RuntimeException("All sub tasks have not been finished");
                 }
+                //update close time
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                String endTime = df.format(new Date());
+                savedJob.setEnd_time(endTime);
+                //update actual hours
+                savedJob.setActual_cost_time(TimeUtils.getDateDiffHours(savedJob.getStart_time(), savedJob.getEnd_time(), "yyyy-MM-dd"));
+
             }
             savedJob.setStatus(job.getStatus());
         }
@@ -390,7 +423,17 @@ public class WorkshopService {
     }
 
     public void createSubTask(SubTask subTask) {
+        //Set planned time
         subTask.setPlanned_cost_time(TimeUtils.getDateDiffHours(subTask.getStart_time(), subTask.getDue_time(), "yyyy-MM-dd"));
+
+        SubTaskType subTaskType = subTaskTypeRepository.findSubTaskType(subTask.getSub_task_type_id());
+
+        //Set SubTask description
+        subTask.setDescription(subTaskType.getTitle());
+
+        //Set SubTask materials
+        subTask.setMaterials(subTaskType.getMaterials());
+
         subTaskRepository.save(subTask);
     }
 

@@ -37,7 +37,8 @@ public class SubTask {
 
     private Integer aircraft_id;
 
-    @Transient
+    private String materials;
+
     private String description;
 
     @Transient
@@ -65,7 +66,7 @@ public class SubTask {
     public SubTask() {
     }
 
-    public SubTask(Integer job_id, Integer sub_task_type_id, String start_time, String due_time, Double planned_cost_time, Integer employee_id, Integer status, Integer aircraftId) {
+    public SubTask(Integer job_id, Integer sub_task_type_id, String start_time, String due_time, Double planned_cost_time, Integer employee_id, Integer status, Integer aircraftId, String materials) {
         this.job_id = job_id;
         this.sub_task_type_id = sub_task_type_id;
         this.start_time = start_time;
@@ -74,6 +75,7 @@ public class SubTask {
         this.employee_id = employee_id;
         this.status = status;
         this.aircraft_id = aircraftId;
+        this.materials = materials;
     }
 
     public Integer getPercentage() {
@@ -170,5 +172,17 @@ public class SubTask {
 
     public void setEmployee_id(Integer employee_id) {
         this.employee_id = employee_id;
+    }
+
+    public void setPercentage(int percentage) {
+        this.percentage = percentage;
+    }
+
+    public String getMaterials() {
+        return materials;
+    }
+
+    public void setMaterials(String materials) {
+        this.materials = materials;
     }
 }

@@ -22,6 +22,8 @@ public class SubTaskType {
      */
     private String description;
 
+    private String materials;
+
     public Integer getId() {
         return id;
     }
@@ -44,5 +46,13 @@ public class SubTaskType {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getMaterials() {
+        return materials;
+    }
+
+    public void setMaterials(String materials) {
+        this.materials = materials;
     }
 }
