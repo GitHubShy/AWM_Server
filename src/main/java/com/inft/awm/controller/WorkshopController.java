@@ -48,8 +48,8 @@ public class WorkshopController {
 
     @PostMapping(value = "/getAllJobs")
     @NeedToken
-    public List<Job> getAllJobs(HttpServletRequest httpServletRequest, int id) {
-        final List<Job> allJobs = workshopService.getAllJobs(id);
+    public List<Job> getAllJobs(HttpServletRequest httpServletRequest, int id,Integer status) {
+        final List<Job> allJobs = workshopService.getAllJobs(id,status);
         return allJobs;
     }
 

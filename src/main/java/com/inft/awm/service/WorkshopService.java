@@ -93,13 +93,13 @@ public class WorkshopService {
         return responseAircraft;
     }
 
-    public List<Job> getAllJobs(int employeeId) {
+    public List<Job> getAllJobs(int employeeId,Integer jobStatus) {
         ArrayList<Job> jobs = new ArrayList<>();
         Iterable<Job> jobIterator = null;
         if (employeeId != 0) {
             jobIterator = jobRepository.findJobsByEmployee(employeeId);
         } else {
-            jobIterator = jobRepository.findAllDesc();
+            jobIterator = jobRepository.findAllDesc(jobStatus == -1 ? null:jobStatus);
         }
         final List<Template> allTemplates = findAvailableTemplates(0);
         final List<ResponseEmployeeType> employees = employeeService.getEmployeeByType(1);
