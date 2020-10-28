@@ -44,6 +44,9 @@ public class WorkshopService {
     @Autowired
     CommentRepository commentRepository;
 
+    @Autowired
+    ReceiptRepository receiptRepository;
+
 
     public Aircraft registerAircraft(Aircraft aircraft) {
         String nextTime = TimeUtils.addDateHours(aircraft.getLast_modify_time(), aircraft.getMaintenance_cycle(), "yyyy-MM-dd");
@@ -313,10 +316,6 @@ public class WorkshopService {
             if (subTask.getEmployee_id() != null && subTask.getEmployee_id() != 0) {
                 originalSubTask.setEmployee_id(subTask.getEmployee_id());
             }
-            //update employee
-            if (subTask.getEmployee_id() != null && subTask.getEmployee_id() != 0) {
-                originalSubTask.setEmployee_id(subTask.getEmployee_id());
-            }
             //update start time
             if (!StringUtils.isEmpty(subTask.getStart_time())) {
                 originalSubTask.setStart_time(subTask.getStart_time());
@@ -391,10 +390,10 @@ public class WorkshopService {
             }
 
             //update materials
-            //update due time
             if (!StringUtils.isEmpty(subTask.getMaterials())) {
                 originalSubTask.setMaterials(subTask.getMaterials());
             }
+            
             originalSubTask.setPlanned_cost_time(TimeUtils.getDateDiffHours(originalSubTask.getStart_time(), originalSubTask.getDue_time(), "yyyy-MM-dd"));
 
         }
@@ -416,10 +415,18 @@ public class WorkshopService {
                 //update actual hours
                 savedJob.setActual_cost_time(TimeUtils.getDateDiffHours(savedJob.getStart_time(), savedJob.getEnd_time(), "yyyy-MM-dd"));
 
+                //change aircraft status to flying:0
+                Aircraft aircraft = aircraftRepository.findById(savedJob.getAircraft_id()).get();
+                aircraft.setStatus(0);
+                aircraftRepository.save(aircraft);
             }
             savedJob.setStatus(job.getStatus());
         }
         jobRepository.save(savedJob);
+
+        if (savedJob.getStatus() == 5) {
+            createReceipt(savedJob);
+        }
     }
 
     public void createSubTask(SubTask subTask) {
@@ -505,6 +512,38 @@ public class WorkshopService {
         comment.setContent_time(time);
         commentRepository.save(comment);
     }
+
+    private void createReceipt(Job job) {
+        if (job.getStatus() != 5) {
+            throw new RuntimeException("The job has not been closed");
+        }
+        final Integer jobId = job.getId();
+        Integer aircraft_id = job.getAircraft_id();
+        Aircraft aircraft = aircraftRepository.findById(aircraft_id).get();
+        Integer customer_id = aircraft.getCustomer_id();
+
+        //create time
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String createTime = df.format(new Date());
+
+        //Delivery time
+        String deliveryTime = TimeUtils.addDateHours(createTime,96,"yyyy-MM-dd HH:mm:ss");
+
+        //crn
+        SimpleDateFormat df2 = new SimpleDateFormat("yyyyMMddHHmmss");
+        String createTime2 = df.format(new Date());
+        String crn = createTime2+jobId;
+
+        //price
+        Double price = job.getActual_cost_time() * 500;
+
+        Receipt receipt = new Receipt(jobId,customer_id,deliveryTime,createTime,price,crn);
+
+        receiptRepository.save(receipt);
+
+
+    }
+
 
 
 }

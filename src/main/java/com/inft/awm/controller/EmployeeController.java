@@ -140,4 +140,11 @@ public class EmployeeController {
     public List<ResponseEmployeeType> getEmployeeByType(Integer type) {
         return employeeService.getEmployeeByType(type);
     }
+
+    @PostMapping(value = "/updatePortrait")
+    @NeedToken
+    public SimpleResult updatePortrait(HttpServletRequest httpServletRequest, String url) {
+        employeeService.updatePortrait(httpServletRequest,url);
+        return new SimpleResult("Success");
+    }
 }

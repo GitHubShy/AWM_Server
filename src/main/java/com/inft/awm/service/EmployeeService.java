@@ -14,6 +14,7 @@ import com.inft.awm.utils.TimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -169,6 +170,18 @@ public class EmployeeService {
             result.add(data);
         }
         return result;
+    }
+
+    public void updatePortrait (HttpServletRequest httpServletRequest, String portraitUrl) {
+        if (StringUtils.isEmpty(portraitUrl)) {
+            throw new RuntimeException("The url is null");
+        }
+        String id = (String) httpServletRequest.getAttribute("id");
+        Integer employeeId = Integer.valueOf(id);
+        Employee employee = employeeRepository.findById(employeeId).get();
+        employee.setPortrait_url(portraitUrl);
+        employeeRepository.save(employee);
+
     }
 
 }
