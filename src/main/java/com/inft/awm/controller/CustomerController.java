@@ -2,6 +2,7 @@ package com.inft.awm.controller;
 
 import com.inft.awm.custom.NeedToken;
 import com.inft.awm.domain.Customer;
+import com.inft.awm.domain.Receipt;
 import com.inft.awm.response.ResponseCustomerLogin;
 import com.inft.awm.response.ResponseLogin;
 import com.inft.awm.response.SimpleResult;
@@ -9,6 +10,9 @@ import com.inft.awm.service.CustomerService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
 @RequestMapping("/awm_server/customer")
@@ -52,6 +56,12 @@ public class CustomerController {
     public Customer getCustomer(Integer id) {
         Customer customer = customerService.findCustomerById(id);
         return customer;
+    }
+    @PostMapping(value = "/getReceipts")
+    @NeedToken
+    public List<Receipt> getReceipts(HttpServletRequest httpServletRequest) {
+        String id = (String) httpServletRequest.getAttribute("id");
+        return  customerService.getReceipts(Integer.valueOf(id));
     }
 
 }

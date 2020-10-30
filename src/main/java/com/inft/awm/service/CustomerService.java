@@ -2,18 +2,27 @@ package com.inft.awm.service;
 
 
 import com.inft.awm.domain.Customer;
+import com.inft.awm.domain.Receipt;
 import com.inft.awm.repository.CustomerRepository;
+import com.inft.awm.repository.ReceiptRepository;
 import com.inft.awm.response.ResponseCustomerLogin;
 import com.inft.awm.response.ResponseLogin;
 import com.inft.awm.token.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 @Service
 public class CustomerService {
 
     @Autowired
     CustomerRepository customerRepository;
+
+    @Autowired
+    ReceiptRepository receiptRepository;
 
     public void register(Customer customer) {
         Customer existCustomer = customerRepository.findByUserName(customer.getAccount_name());
@@ -48,5 +57,19 @@ public class CustomerService {
 
     public Customer findCustomerById(Integer customerId) {
         return customerRepository.findByCustomerId(customerId);
+    }
+
+    public List<Receipt> getReceipts(Integer customerId) {
+        if (customerId == null) {
+            throw new RuntimeException("The customer id is null");
+        }
+        List<Receipt> result = new ArrayList<>();
+        Iterable<Receipt> customerReceipts = receiptRepository.findCustomerReceipts(customerId);
+        Iterator<Receipt> iterator = customerReceipts.iterator();
+        while (iterator.hasNext()) {
+            Receipt receipt = iterator.next();
+            result.add(receipt);
+        }
+        return result;
     }
 }

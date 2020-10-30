@@ -435,6 +435,9 @@ public class WorkshopService {
 
         SubTaskType subTaskType = subTaskTypeRepository.findSubTaskType(subTask.getSub_task_type_id());
 
+        //Set status to 0(Created)
+        subTask.setStatus(0);
+
         //Set SubTask description
         subTask.setDescription(subTaskType.getTitle());
 
@@ -530,9 +533,7 @@ public class WorkshopService {
         String deliveryTime = TimeUtils.addDateHours(createTime,96,"yyyy-MM-dd HH:mm:ss");
 
         //crn
-        SimpleDateFormat df2 = new SimpleDateFormat("yyyyMMddHHmmss");
-        String createTime2 = df.format(new Date());
-        String crn = createTime2+jobId;
+        String crn = createTime.replaceAll("[[\\s-:punct:]]","") + jobId;
 
         //price
         Double price = job.getActual_cost_time() * 500;

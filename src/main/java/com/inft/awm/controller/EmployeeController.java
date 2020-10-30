@@ -7,6 +7,7 @@ import com.inft.awm.domain.request.RequestDeleteEmployee;
 import com.inft.awm.domain.request.RequestGetEmployee;
 import com.inft.awm.domain.request.RequestLogin;
 import com.inft.awm.repository.EmployeeRepository;
+import com.inft.awm.response.ResponseEmployeeLogin;
 import com.inft.awm.response.ResponseEmployeeType;
 import com.inft.awm.response.ResponseLogin;
 import com.inft.awm.response.SimpleResult;
@@ -68,7 +69,7 @@ public class EmployeeController {
             @ApiResponse(code = 200, message = "success",response = ResponseLogin.class),
             @ApiResponse(code = 1, message = "failed reason is shown in message",response = SimpleResult.class),
     })
-    public ResponseLogin login(@RequestBody RequestLogin rl) {
+    public ResponseEmployeeLogin login(@RequestBody RequestLogin rl) {
         return employeeService.login(rl.getAccount_name(),rl.getPassword());
     }
 

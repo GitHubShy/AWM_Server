@@ -5,6 +5,7 @@ import com.inft.awm.domain.Attendance;
 import com.inft.awm.domain.Employee;
 import com.inft.awm.repository.AttendanceRepository;
 import com.inft.awm.repository.EmployeeRepository;
+import com.inft.awm.response.ResponseEmployeeLogin;
 import com.inft.awm.response.ResponseEmployeeType;
 import com.inft.awm.response.ResponseLogin;
 import com.inft.awm.token.TokenUtils;
@@ -39,7 +40,7 @@ public class EmployeeService {
         return save;
     }
 
-    public ResponseLogin login(String account_name, String password) {
+    public ResponseEmployeeLogin login(String account_name, String password) {
 
         if (StringUtils.isEmpty(account_name)) {
             throw new RuntimeException("The account name can not be empty");
@@ -54,7 +55,7 @@ public class EmployeeService {
                 throw new RuntimeException("The password is wrong");
             } else {
                 String token = TokenUtils.createEmployeeToken(existCustomer);
-                return new ResponseLogin(token);
+                return new ResponseEmployeeLogin(token,existCustomer);
             }
         }
     }
