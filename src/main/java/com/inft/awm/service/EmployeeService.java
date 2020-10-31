@@ -5,9 +5,7 @@ import com.inft.awm.domain.Attendance;
 import com.inft.awm.domain.Employee;
 import com.inft.awm.repository.AttendanceRepository;
 import com.inft.awm.repository.EmployeeRepository;
-import com.inft.awm.response.ResponseEmployeeLogin;
-import com.inft.awm.response.ResponseEmployeeType;
-import com.inft.awm.response.ResponseLogin;
+import com.inft.awm.response.*;
 import com.inft.awm.token.TokenUtils;
 import com.inft.awm.utils.EmployeeUtils;
 import com.inft.awm.utils.StringUtils;
@@ -16,7 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -183,6 +184,53 @@ public class EmployeeService {
         employee.setPortrait_url(portraitUrl);
         employeeRepository.save(employee);
 
+    }
+
+    public List<ResponseMonthlySalary> getMonthlySalary(HttpServletRequest httpServletRequest) {
+        String id = (String) httpServletRequest.getAttribute("id");
+        Integer employeeId = Integer.valueOf(id);
+        //Get employee
+        Employee employee = employeeRepository.findById(employeeId).get();
+        //Get salary
+        Float payment_rate = employee.getPayment_rate();
+        //Get attendance
+        Iterable<Attendance> attendances = attendanceRepository.findAttendanceById(employeeId);
+        Iterator<Attendance> iterator = attendances.iterator();
+        //Create result
+        ArrayList<ResponseMonthlySalary> result = new ArrayList<>();
+        while (iterator.hasNext()) {
+            Attendance attendance = iterator.next();
+            String date = attendance.getDate();
+            SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat sd1 = new SimpleDateFormat("yyyy-MM");
+            SimpleDateFormat sd2 = new SimpleDateFormat("MM-dd");
+            try {
+                Date newDate = sd.parse(date);
+                String yyyyMM = sd1.format(newDate);
+                System.out.println(yyyyMM);
+                //Create a new monthly salary object
+                ResponseMonthlySalary parent = new ResponseMonthlySalary(yyyyMM,0,0,employee.getPayment_rate(),new ArrayList<ResponseDailySalary>());;
+                boolean isExist = false;
+                for (ResponseMonthlySalary monthlySalary : result) {
+                    if (yyyyMM.equals(monthlySalary.getDate())) {//The monthly salary object has already exist.
+                        parent = monthlySalary;
+                        isExist = true;
+                        break;
+                    }
+                }
+                String MMdd = sd2.format(newDate);
+                ResponseDailySalary dailySalary = new ResponseDailySalary(MMdd,attendance.getWork_hours(),payment_rate * attendance.getWork_hours(),payment_rate,attendance.getOn_time(),attendance.getOff_time());
+                parent.getDaily_salary().add(dailySalary);
+                parent.setSalary(parent.getSalary()+dailySalary.getSalary());
+                parent.setWork_hours(parent.getWork_hours()+dailySalary.getWork_hours());
+                if (!isExist) {
+                    result.add(parent);
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
     }
 
 }

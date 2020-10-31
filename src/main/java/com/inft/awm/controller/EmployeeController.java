@@ -7,10 +7,7 @@ import com.inft.awm.domain.request.RequestDeleteEmployee;
 import com.inft.awm.domain.request.RequestGetEmployee;
 import com.inft.awm.domain.request.RequestLogin;
 import com.inft.awm.repository.EmployeeRepository;
-import com.inft.awm.response.ResponseEmployeeLogin;
-import com.inft.awm.response.ResponseEmployeeType;
-import com.inft.awm.response.ResponseLogin;
-import com.inft.awm.response.SimpleResult;
+import com.inft.awm.response.*;
 import com.inft.awm.service.EmployeeService;
 import com.inft.awm.utils.StringUtils;
 import io.swagger.annotations.*;
@@ -147,5 +144,11 @@ public class EmployeeController {
     public SimpleResult updatePortrait(HttpServletRequest httpServletRequest, String url) {
         employeeService.updatePortrait(httpServletRequest,url);
         return new SimpleResult("Success");
+    }
+
+    @PostMapping(value = "/getMonthlySalary")
+    @NeedToken
+    public List<ResponseMonthlySalary> getMonthlySalary(HttpServletRequest httpServletRequest) {
+        return employeeService.getMonthlySalary(httpServletRequest);
     }
 }
