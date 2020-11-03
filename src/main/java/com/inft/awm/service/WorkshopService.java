@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -418,6 +419,8 @@ public class WorkshopService {
                 //change aircraft status to flying:0
                 Aircraft aircraft = aircraftRepository.findById(savedJob.getAircraft_id()).get();
                 aircraft.setStatus(0);
+                aircraft.setLast_modify_time(endTime);
+                aircraft.setNext_modify_time(TimeUtils.addDateHours(aircraft.getLast_modify_time(),aircraft.getMaintenance_cycle(),"yyyy-MM-dd"));
                 aircraftRepository.save(aircraft);
             }
             savedJob.setStatus(job.getStatus());
@@ -541,10 +544,50 @@ public class WorkshopService {
         Receipt receipt = new Receipt(jobId,customer_id,deliveryTime,createTime,price,crn);
 
         receiptRepository.save(receipt);
-
-
     }
 
+    public void updateAircraft(Aircraft aircraft) {
+        if (aircraft == null) {
+            throw new RuntimeException("The aircraft is null");
+        }
+
+        Aircraft orginalAircraft = aircraftRepository.findById(aircraft.getId()).get();
+
+        if (aircraft.getAircraft_pic() != null) {
+            orginalAircraft.setAircraft_pic(aircraft.getAircraft_pic());
+        }
+
+        //update status
+        //0:Servicing  1:Need maintaining 2:Maintaining 99:need staff to confirm register information
+        if (aircraft.getStatus() != null) {
+            orginalAircraft.setStatus(aircraft.getStatus());
+        }
+
+        if (aircraft.getLast_modify_time() != null) {
+            orginalAircraft.setLast_modify_time(aircraft.getLast_modify_time());
+            //update next service time
+            orginalAircraft.setNext_modify_time(TimeUtils.addDateHours(orginalAircraft.getLast_modify_time(),orginalAircraft.getMaintenance_cycle(),"yyyy-MM-dd"));
+        }
+        if (aircraft.getMaintenance_cycle() != null) {
+            orginalAircraft.setMaintenance_cycle(aircraft.getMaintenance_cycle());
+            //update next service time
+            orginalAircraft.setNext_modify_time(TimeUtils.addDateHours(orginalAircraft.getLast_modify_time(),orginalAircraft.getMaintenance_cycle(),"yyyy-MM-dd"));
+        }
+
+        //Judge if need maintain
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date parse = df.parse(orginalAircraft.getNext_modify_time());
+            Date currentDate = new Date();
+            if (parse.before(currentDate)) {
+                orginalAircraft.setStatus(1);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        aircraftRepository.save(orginalAircraft);
+    }
 
 
 }

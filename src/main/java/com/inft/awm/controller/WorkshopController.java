@@ -144,4 +144,11 @@ public class WorkshopController {
         workshopService.createComment(httpServletRequest,comment);
         return new SimpleResult("Success");
     }
+
+    @PostMapping(value = "/updateAircraft")
+    @NeedToken
+    public SimpleResult updateAircraft(@RequestBody Aircraft aircraft) {
+        workshopService.updateAircraft(aircraft);
+        return new SimpleResult("Success");
+    }
 }

@@ -31,7 +31,6 @@ public class Aircraft {
     @NotBlank(message = "The serial cannot be empty")
     protected String serial;
 
-    @NotNull(message = "The total_flight_time cannot be empty")
     protected Float total_flight_time;
 
     @NotNull(message = "The maintenance_cycle cannot be empty")
