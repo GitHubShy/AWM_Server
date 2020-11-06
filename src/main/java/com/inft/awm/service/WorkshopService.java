@@ -14,7 +14,13 @@ import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-
+/**
+ * Handle customer workshop logic
+ *
+ * @author Yao Shi
+ * @version 1.0
+ * @date 30/10/2020 11:47 pm
+ */
 @Service
 public class WorkshopService {
 
@@ -49,6 +55,10 @@ public class WorkshopService {
     ReceiptRepository receiptRepository;
 
 
+    /** Register a aircraft
+     * @param aircraft The aircraft
+     * @return
+     */
     public Aircraft registerAircraft(Aircraft aircraft) {
         String nextTime = TimeUtils.addDateHours(aircraft.getLast_modify_time(), aircraft.getMaintenance_cycle(), "yyyy-MM-dd");
         aircraft.setNext_modify_time(nextTime);
@@ -56,6 +66,9 @@ public class WorkshopService {
         return saved;
     }
 
+    /** Register a component for a aircraft
+     * @param components The component
+     */
     public void registerComponents(List<Component> components) {
         Aircraft aircraft = null;
         for (Component c : components) {
@@ -71,6 +84,10 @@ public class WorkshopService {
     }
 
 
+    /** Get a aircraft by aircraft id
+     * @param aircraftId The id for a aircraft
+     * @return The aircraft
+     */
     public List<ResponseAircraft> getAircraft(Integer aircraftId) {
 
         Iterable<Aircraft> allAircraft;
@@ -84,6 +101,10 @@ public class WorkshopService {
         return responseAircraft;
     }
 
+    /** Get all aircraft that belong to a customer
+     * @param customerId The customer id
+     * @return The list of the aircraft
+     */
     public List<ResponseAircraft> getCustomerAircraft(Integer customerId) {
 
         Iterable<Aircraft> allAircraft;
@@ -97,6 +118,11 @@ public class WorkshopService {
         return responseAircraft;
     }
 
+    /** Get all jobs, or jobs for a employee
+     * @param employeeId  if employeeid = 0 , return all
+     * @param jobStatus job status
+     * @return job list
+     */
     public List<Job> getAllJobs(int employeeId,Integer jobStatus) {
         ArrayList<Job> jobs = new ArrayList<>();
         Iterable<Job> jobIterator = null;
@@ -136,11 +162,18 @@ public class WorkshopService {
         return jobs;
     }
 
+    /** Get a job by id
+     * @param jobId
+     * @return job
+     */
     public Job getJob(Integer jobId) {
         Job job = jobRepository.findById(jobId).get();
         return job;
     }
 
+    /**Create a job
+     * @param job
+     */
     public void createJob(Job job) {
         //all created job should be set status=0
         job.setStatus(0);
@@ -199,6 +232,10 @@ public class WorkshopService {
 
     }
 
+    /** Get all aircraft with components
+     * @param allAircraft aircraft list
+     * @return
+     */
     private ArrayList<ResponseAircraft> getResponseAircrafts(Iterable<Aircraft> allAircraft) {
         Iterable<Component> allComponents = componentRepository.findAll();
 
@@ -227,9 +264,9 @@ public class WorkshopService {
         return responseAircraft;
     }
 
-    /**
+    /** Find all available templated for a employee
      * @param employeeId 0:return system default templates   otherwise return templates belongs to the employee
-     * @return
+     * @return all available templates
      */
     public List<Template> findAvailableTemplates(Integer employeeId) {
         Iterable<Template> all;
@@ -247,6 +284,10 @@ public class WorkshopService {
         return templates;
     }
 
+    /** Get tasks for a job
+     * @param jobId
+     * @return all tasks
+     */
     public List<SubTask> getSubTasksForJob(Integer jobId) {
         final Iterable<SubTask> subTasksIterable = subTaskRepository.findSubTasksByJob(jobId);
         ArrayList<SubTask> subTasks = new ArrayList<>();
@@ -275,6 +316,10 @@ public class WorkshopService {
         return subTasks;
     }
 
+    /**Get tasks for a employee
+     * @param employeeId
+     * @return all tasks
+     */
     public List<SubTask> getTasksForEmployee(Integer employeeId) {
         final Iterable<SubTask> subTasksIterable = subTaskRepository.findSubTaskByEmployee(employeeId);
         ArrayList<SubTask> subTasks = new ArrayList<>();
@@ -303,6 +348,9 @@ public class WorkshopService {
         return subTasks;
     }
 
+    /** Update a task status
+     * @param subTask
+     */
     public void updateSubTask(SubTask subTask) {
         final Integer subTaskId = subTask.getId();
         final Integer job_id = subTask.getJob_id();
@@ -401,6 +449,9 @@ public class WorkshopService {
         subTaskRepository.save(originalSubTask);
     }
 
+    /** Update a job status
+     * @param job
+     */
     public void updateJob(Job job) {
         Job savedJob = jobRepository.findById(job.getId()).get();
 
@@ -432,6 +483,9 @@ public class WorkshopService {
         }
     }
 
+    /** Create a sub task
+     * @param subTask
+     */
     public void createSubTask(SubTask subTask) {
         //Set planned time
         subTask.setPlanned_cost_time(TimeUtils.getDateDiffHours(subTask.getStart_time(), subTask.getDue_time(), "yyyy-MM-dd"));
@@ -450,6 +504,9 @@ public class WorkshopService {
         subTaskRepository.save(subTask);
     }
 
+    /**Delete a sub task
+     * @param subTaskId
+     */
     public void deleteSubTask(Integer subTaskId) {
         subTaskRepository.deleteById(subTaskId);
     }
@@ -465,6 +522,9 @@ public class WorkshopService {
         return result;
     }
 
+    /**Create a new template for a employee
+     * @param newTemplate
+     */
     public void createNewTemplate(RequestCreateTemplate newTemplate) {
 
         ArrayList<Integer> subTaskTypeIds = newTemplate.getSubTaskTypeIds();
@@ -489,6 +549,10 @@ public class WorkshopService {
 
     }
 
+    /**Get all comments for a job
+     * @param id
+     * @return all comments
+     */
     public List<Comment> getCommentsForJob(Integer id) {
         if (id == null || id == 0) {
             throw new RuntimeException("Job id is wrong="+id);
@@ -506,6 +570,10 @@ public class WorkshopService {
         return result;
     }
 
+    /** Create a comment
+     * @param httpServletReques
+     * @param comment
+     */
     public void createComment(HttpServletRequest httpServletReques,Comment comment) {
         if (comment.getEmployee_id() == null) {
             comment.setEmployee_id(Integer.valueOf((String)httpServletReques.getAttribute("id")));
@@ -519,6 +587,9 @@ public class WorkshopService {
         commentRepository.save(comment);
     }
 
+    /**Create a receipt for a job
+     * @param job
+     */
     private void createReceipt(Job job) {
         if (job.getStatus() != 5) {
             throw new RuntimeException("The job has not been closed");
@@ -546,6 +617,9 @@ public class WorkshopService {
         receiptRepository.save(receipt);
     }
 
+    /**Update a aircraft
+     * @param aircraft
+     */
     public void updateAircraft(Aircraft aircraft) {
         if (aircraft == null) {
             throw new RuntimeException("The aircraft is null");

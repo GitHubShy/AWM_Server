@@ -20,7 +20,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-
+/**
+ * Handle customer employee logic
+ *
+ * @author Yao Shi
+ * @version 1.0
+ * @date 30/10/2020 11:47 pm
+ */
 @Service
 public class EmployeeService {
 
@@ -30,6 +36,10 @@ public class EmployeeService {
     @Autowired
     AttendanceRepository attendanceRepository;
 
+    /**Register a employee
+     * @param employee
+     * @return
+     */
     public Employee register(Employee employee) {
         Employee existCustomer = employeeRepository.findByEmployeeName(employee.getAccount_name());
 
@@ -41,6 +51,11 @@ public class EmployeeService {
         return save;
     }
 
+    /** Employee Login
+     * @param account_name
+     * @param password
+     * @return
+     */
     public ResponseEmployeeLogin login(String account_name, String password) {
 
         if (StringUtils.isEmpty(account_name)) {
@@ -61,11 +76,18 @@ public class EmployeeService {
         }
     }
 
+    /**Get all employee
+     * @return
+     */
     public Iterable<Employee> getAllEmployees() {
         Iterable<Employee> allCustomers = employeeRepository.findAll();
         return allCustomers;
     }
 
+    /** Find a employee by id
+     * @param customerId
+     * @return
+     */
     public Employee findEmployeeById(Integer customerId) {
         return employeeRepository.findByEmployeeId(customerId);
     }
@@ -84,7 +106,7 @@ public class EmployeeService {
         attendanceRepository.save(attendanceById);
     }
 
-    /**
+    /** Find attendace for a employee
      * @param employee_id
      * @param date if date == null, return all the user's attendances."2020-09-12"
      * @return
@@ -108,6 +130,9 @@ public class EmployeeService {
         return attendances;
     }
 
+    /**Update a emloyee
+     * @param employee
+     */
     public void updateEmployee(Employee employee){
         if (employee == null) {
             throw new RuntimeException("employee can not be null");
@@ -153,7 +178,7 @@ public class EmployeeService {
         employeeRepository.save(originalEmployee);
     }
 
-    /**
+    /** Get employee by different type
      * @param type -1:all 0: Engineer   1: Manager  99:Super Administrator
      */
     public List<ResponseEmployeeType> getEmployeeByType(int type) {
@@ -174,6 +199,10 @@ public class EmployeeService {
         return result;
     }
 
+    /**Update employee's portrait
+     * @param httpServletRequest
+     * @param portraitUrl
+     */
     public void updatePortrait (HttpServletRequest httpServletRequest, String portraitUrl) {
         if (StringUtils.isEmpty(portraitUrl)) {
             throw new RuntimeException("The url is null");
@@ -186,6 +215,10 @@ public class EmployeeService {
 
     }
 
+    /** Get salary record for login employee
+     * @param httpServletRequest
+     * @return
+     */
     public List<ResponseMonthlySalary> getMonthlySalary(HttpServletRequest httpServletRequest) {
         String id = (String) httpServletRequest.getAttribute("id");
         Integer employeeId = Integer.valueOf(id);

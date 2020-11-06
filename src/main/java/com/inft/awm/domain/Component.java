@@ -3,7 +3,13 @@ package com.inft.awm.domain;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-
+/**
+ * mapping of Component table
+ *
+ * @author Yao Shi
+ * @version 1.0
+ * @date 30/10/2020 11:47 pm
+ */
 @Entity
 @Table
 public class Component {

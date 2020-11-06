@@ -1,7 +1,13 @@
 package com.inft.awm.domain;
 
 import javax.persistence.*;
-
+/**
+ * mapping of Comment table
+ *
+ * @author Yao Shi
+ * @version 1.0
+ * @date 30/10/2020 11:47 pm
+ */
 @Table
 @Entity
 public class Comment {
@@ -14,8 +20,14 @@ public class Comment {
 
     private Integer job_id;
 
+    /**
+     * The comment content
+     */
     private String content;
 
+    /**
+     * the time of writing this comment
+     */
     private String content_time;
 
     @Transient

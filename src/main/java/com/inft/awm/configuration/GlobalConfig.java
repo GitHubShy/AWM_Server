@@ -1,6 +1,4 @@
 package com.inft.awm.configuration;
-
-
 import com.inft.awm.interceptor.AuthenticationInterceptor;
 import com.inft.awm.response.Result;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,7 +19,13 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
-
+/**
+ * This class is used to config interceptors and resource handlers.
+ *
+ * @author Yao Shi
+ * @version 1.0
+ * @date 2020/09/15 21:47 pm
+ */
 @Configuration
 public class GlobalConfig implements WebMvcConfigurer {
 
@@ -30,6 +34,7 @@ public class GlobalConfig implements WebMvcConfigurer {
 
     @Bean
     public CorsFilter corsFilter() {
+        //Configure cross domain
         CorsConfiguration config = new CorsConfiguration();
         config.addAllowedOrigin("*");
         config.setAllowCredentials(true);
@@ -50,10 +55,12 @@ public class GlobalConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         /**
-         * 配置资源映射
-         * 意思是：如果访问的资源路径是以“/images/”开头的，
-         * 就给我映射到本机的“E:/images/”这个文件夹内，去找你要的资源
-         * 注意：E:/images/ 后面的 “/”一定要带上
+         * Configure resource mapping
+         * If the path of the resource to be accessed starts with / images /,
+         *
+         * *Just map it to the "E / images /" folder of the local computer to find the resources you want
+         *
+         * *Note: the '/ "after E / images / must be accompanied
          */
         registry.addResourceHandler("/images/**")
                 .addResourceLocations("file:"+fileSavePath);
@@ -62,8 +69,7 @@ public class GlobalConfig implements WebMvcConfigurer {
 //                .addResourceLocations("classpath:/META-INF/resources/");
 //        registry.addResourceHandler("/webjars/**")
 //                .addResourceLocations("classpath:/META-INF/resources/webjars/");
-
-        // 解决静态资源无法访问
+        
 
         //registry.addResourceHandler("/").addResourceLocations("classpath:/static/");
 

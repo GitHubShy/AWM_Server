@@ -5,9 +5,18 @@ import com.inft.awm.domain.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * A class used for returning aircraft with components
+ *
+ * @author Yao Shi
+ * @version 1.0
+ * @date 30/10/2020 11:47 pm
+ */
 public class ResponseAircraft extends Aircraft {
 
+    /**
+     * a list to save all components of a aircraft
+     */
     private List<Component> components = new ArrayList<>();
 
     public ResponseAircraft(Aircraft ac) {

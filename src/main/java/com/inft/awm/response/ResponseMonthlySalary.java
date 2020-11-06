@@ -1,6 +1,5 @@
 package com.inft.awm.response;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -8,7 +7,7 @@ import java.util.List;
  *
  * @author Yao Shi
  * @version 1.0
- * @date 30/10/2020 11:47 pm
+ * @date 30/10/2020 10:47 pm
  */
 public class ResponseMonthlySalary {
     private String date;

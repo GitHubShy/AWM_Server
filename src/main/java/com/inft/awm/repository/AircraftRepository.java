@@ -6,6 +6,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
+/**
+ * AircraftRepository CRUD
+ *
+ * @author Yao Shi
+ * @version 1.0
+ * @date 30/10/2020 11:47 pm
+ */
 public interface AircraftRepository extends CrudRepository<Aircraft,Integer> {
 
     @Query(value = "select * from aircraft where customer_id = ?1",nativeQuery = true)

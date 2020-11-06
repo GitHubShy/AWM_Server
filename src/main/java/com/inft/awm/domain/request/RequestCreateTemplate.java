@@ -1,7 +1,13 @@
 package com.inft.awm.domain.request;
 
 import java.util.ArrayList;
-
+/**
+ * A class used for saving parameters for a api interface to request creating template
+ *
+ * @author Yao Shi
+ * @version 1.0
+ * @date 2020/10/30 11:47 pm
+ */
 public class RequestCreateTemplate {
 
     /**

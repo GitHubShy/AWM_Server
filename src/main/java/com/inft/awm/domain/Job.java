@@ -3,7 +3,13 @@ package com.inft.awm.domain;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-
+/**
+ * mapping of Job table
+ *
+ * @author Yao Shi
+ * @version 1.0
+ * @date 30/10/2020 11:47 pm
+ */
 @Entity
 @Table
 public class Job {
@@ -33,11 +39,17 @@ public class Job {
     private Integer template_id;
 
 
-    private String  end_time;
+    private String end_time;
 
-    private Double  planned_cost_time;
+    /**
+     * Planned cost time
+     */
+    private Double planned_cost_time;
 
-    private Double  actual_cost_time;
+    /**
+     * actual_cost_time
+     */
+    private Double actual_cost_time;
 
     @Transient
     private String employee_name;

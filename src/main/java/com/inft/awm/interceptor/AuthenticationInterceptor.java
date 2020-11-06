@@ -19,7 +19,13 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
-
+/**
+ * Used to authentication a login user
+ *
+ * @author Yao Shi
+ * @version 1.0
+ * @date 30/10/2020 11:47 pm
+ */
 public class AuthenticationInterceptor implements HandlerInterceptor {
 
 
@@ -31,9 +37,9 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String token = request.getHeader("token");// 从 http 请求头中取出 token
+        String token = request.getHeader("token");// getting token from http header
 
-        // 如果不是映射到方法直接通过
+        // if it is not a mapping method, pass it
         if(!(handler instanceof HandlerMethod)){
             return true;
         }
@@ -45,22 +51,22 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         HandlerMethod handlerMethod=(HandlerMethod)handler;
         Method method=handlerMethod.getMethod();
 
-        //检查是否有passtoken注释，有则跳过认证
+        //check if there is a @passtoken
         if (method.isAnnotationPresent(NoNeedToken.class)) {
             NoNeedToken passToken = method.getAnnotation(NoNeedToken.class);
             if (passToken.required()) {
                 return true;
             }
         }
-        //检查有没有需要用户权限的注解
+        //check if there is @needtoken
         if (method.isAnnotationPresent(NeedToken.class)) {
             NeedToken userLoginToken = method.getAnnotation(NeedToken.class);
             if (userLoginToken.required()) {
-                // 执行认证
+                // no token
                 if (token == null) {
                     throw new RuntimeException("There is no token, please login");
                 }
-                // 获取 token 中的 user id
+                // get user id from token
                 String type;
                 String id;
                 try {
@@ -71,24 +77,24 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 
                 try {
                     id = JWT.decode(token).getAudience().get(0);
-                    if ("customer".equals(type)) {
+                    if ("customer".equals(type)) {//This is a customer
                         Customer customer = customerService.findCustomerById(Integer.valueOf(id));
                         if (customer == null) {
                             throw new RuntimeException("The user does not exist，please register");
                         }
-                        // 验证 token
+                        // verifier token
                         JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(customer.getPassword())).build();
                         try {
                             jwtVerifier.verify(token);
                         } catch (JWTVerificationException e) {
                             throw new RuntimeException("customer verify token failed");
                         }
-                    } else {
+                    } else { //This is a employee
                         Employee employee = employeeService.findEmployeeById(Integer.valueOf(id));
                         if (employee == null) {
                             throw new RuntimeException("he employee does not exist，please register");
                         }
-                        // 验证 token
+                        // verify token
                         JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(employee.getPassword())).build();
                         try {
                             jwtVerifier.verify(token);

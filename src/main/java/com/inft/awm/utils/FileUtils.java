@@ -7,9 +7,22 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
-
+/**
+ * utils for File
+ *
+ * @author Yao Shi
+ * @version 1.0
+ * @date 30/10/2020 11:47 pm
+ */
 public class FileUtils {
 
+    /** Save a file to a specific path
+     * @param fileDir
+     * @param file
+     * @param request
+     * @return
+     * @throws IOException
+     */
     public static SimpleResult uploadFile(String fileDir, MultipartFile file, HttpServletRequest request) throws IOException {
 
         File dir = new File(fileDir);
@@ -24,7 +37,6 @@ public class FileUtils {
 
         try {
             file.transferTo(newFile);
-            //协议 :// ip地址 ：端口号 / 文件目录(/images/2020/03/15/xxx.jpg)
             String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + "/images/"  + newFileName;
             return new SimpleResult(url);
         } catch (IOException e) {

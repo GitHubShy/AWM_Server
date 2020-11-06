@@ -5,7 +5,13 @@ import com.inft.awm.domain.Job;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
-
+/**
+ * Job CRUD
+ *
+ * @author Yao Shi
+ * @version 1.0
+ * @date 30/10/2020 11:47 pm
+ */
 public interface JobRepository extends CrudRepository<Job,Integer> {
 
     @Query(value = "select * from job where employee_id = ?1",nativeQuery = true)

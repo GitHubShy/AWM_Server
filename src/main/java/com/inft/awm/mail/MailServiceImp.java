@@ -6,7 +6,13 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-
+/**
+ * Sending email service
+ *
+ * @author Yao Shi
+ * @version 1.0
+ * @date 30/10/2020 11:47 pm
+ */
 @Service
 public class MailServiceImp {
 
@@ -17,17 +23,17 @@ public class MailServiceImp {
     private String from;
 
     public void sendSimpleMail(String to, String subject, String content) {
-        //创建SimpleMailMessage对象
+        //create SimpleMailMessage
         SimpleMailMessage message = new SimpleMailMessage();
-        //邮件发送人
+        //sender
         message.setFrom(from);
-        //邮件接收人
+        //receiver
         message.setTo(to);
-        //邮件主题
+        //subject
         message.setSubject(subject);
-        //邮件内容
+        //content
         message.setText(content);
-        //发送邮件
+        //send
         mailSender.send(message);
     }
 }

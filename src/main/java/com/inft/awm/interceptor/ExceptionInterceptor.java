@@ -12,7 +12,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import java.util.Set;
-
+/**
+ * Handle to Unified return format if there is a exception
+ *
+ * @author Yao Shi
+ * @version 1.0
+ * @date 30/10/2020 11:47 pm
+ */
 @RestControllerAdvice
 public class ExceptionInterceptor {
     private static final Logger LOG = LoggerFactory.getLogger(ExceptionInterceptor.class);
@@ -34,8 +40,10 @@ public class ExceptionInterceptor {
 //                return new Result(1, StringUtils.isNotBlank(e.getMessage()) ? e.getMessage() : e.toString());
 //            }
 //        }
-        if (e instanceof ConstraintViolationException) {
+        if (e instanceof ConstraintViolationException) {//ConstraintViolationException
+            //cast exception
             ConstraintViolationException exception = (ConstraintViolationException) e;
+            //Get constraintViolations
             final Set<ConstraintViolation<?>> constraintViolations = exception.getConstraintViolations();
             StringBuilder sb = new StringBuilder();
             for (ConstraintViolation<?> str : constraintViolations) {
@@ -43,6 +51,7 @@ public class ExceptionInterceptor {
                 sb.append(str.getMessageTemplate());
                 sb.append("/n");
             }
+            //Unified return format
             return new Result(1 ,sb.toString());
         }
         return new Result(1,e.getMessage());

@@ -6,7 +6,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-
+/**
+ * utils for time
+ *
+ * @author Yao Shi
+ * @version 1.0
+ * @date 30/10/2020 11:47 pm
+ */
 public class TimeUtils {
 
     public static void main(String[] args) {
@@ -16,6 +22,9 @@ public class TimeUtils {
         TimeUtils.isOverDue("2020-10-11","yyyy-MM-dd");
     }
 
+    /** Get current time as a format "yyyy-MM-dd HH:mm:ss"
+     * @return
+     */
     public static String getCurrentDateTime() {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String dateTime = df.format(new Date());
@@ -23,6 +32,9 @@ public class TimeUtils {
         return dateTime;
     }
 
+    /**Get current time as a format "yyyy-MM-dd"
+     * @return
+     */
     public static String getCurrentDate() {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         String dateTime = df.format(new Date());
@@ -30,6 +42,10 @@ public class TimeUtils {
         return dateTime;
     }
 
+    /** Change a date to yyyy-MM-dd
+     * @param date
+     * @return
+     */
     public static String getCurrentDate(String date) {
         String dateTime="2030-09-09";
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -46,6 +62,9 @@ public class TimeUtils {
         return dateTime;
     }
 
+    /**Get current time HH:mm:ss
+     * @return
+     */
     public static String getCurrentTime() {
         SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
         String dateTime = df.format(new Date());
@@ -53,6 +72,12 @@ public class TimeUtils {
         return dateTime;
     }
 
+    /** Get date diff
+     * @param startTime
+     * @param endTime
+     * @param format
+     * @return
+     */
     public static long getDateDiff(String startTime, String endTime, String format){
         //按照传入的格式生成一个simpledateformate对象
         SimpleDateFormat sd = new SimpleDateFormat(format);
@@ -77,6 +102,12 @@ public class TimeUtils {
         return 0;
     }
 
+    /**GetDateDiffHours
+     * @param startTime
+     * @param endTime
+     * @param format
+     * @return
+     */
     public static double getDateDiffHours(String startTime, String endTime, String format) {
         SimpleDateFormat sd = new SimpleDateFormat(format);
 //        long nd = 1000 * 24 * 60 * 60;//一天的毫秒数
@@ -97,6 +128,12 @@ public class TimeUtils {
     }
 
 
+    /** Get a new date by adding hours to a specific date
+     * @param startTime
+     * @param hours
+     * @param format
+     * @return
+     */
     public static String addDateHours(String startTime, Integer hours,String format){
 
         SimpleDateFormat sd = new SimpleDateFormat(format);
@@ -119,6 +156,11 @@ public class TimeUtils {
 
     }
 
+    /**Judge if over due
+     * @param dueTime
+     * @param format
+     * @return
+     */
     public static boolean isOverDue(String dueTime,String format) {
         SimpleDateFormat sd = new SimpleDateFormat(format);
         Date date = null;

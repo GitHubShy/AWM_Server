@@ -1,13 +1,11 @@
 package com.inft.awm.response;
 
-import java.util.List;
-
 /**
- * Get daily salary
+ * A class for return salary
  *
  * @author Yao Shi
  * @version 1.0
- * @date 30/10/2020 11:47 pm
+ * @date 2020/10/30 14:33 pm
  */
 public class ResponseDailySalary {
     private String date;

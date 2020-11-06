@@ -2,7 +2,13 @@ package com.inft.awm.domain;
 
 import javax.persistence.*;
 
-
+/**
+ * mapping of Attendance table
+ *
+ * @author Yao Shi
+ * @version 1.0
+ * @date 30/10/2020 11:47 pm
+ */
 @Entity
 @Table
 public class Attendance {
@@ -15,10 +21,19 @@ public class Attendance {
 
     private String date;
 
+    /**
+     * clock on time
+     */
     private String on_time;
 
+    /**
+     * clock off time
+     */
     private String off_time;
 
+    /**
+     * working hours
+     */
     private double work_hours;
 
     public Attendance() {

@@ -1,7 +1,13 @@
 package com.inft.awm.domain;
 
 import javax.persistence.*;
-
+/**
+ * mapping of TemplateTask table
+ *
+ * @author Yao Shi
+ * @version 1.0
+ * @date 30/10/2020 11:47 pm
+ */
 @Entity
 @Table(name = "template_task")
 public class TemplateTask {

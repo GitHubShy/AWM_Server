@@ -12,6 +12,13 @@ import springfox.documentation.spring.web.plugins.Docket;
 
 //http://47.104.167.88:8080/swagger-ui.html#/
 //http://localhost:8080/swagger-ui.html
+/**
+ * The class is used to generate api web site with the framework Swagger
+ *
+ * @author Yao Shi
+ * @version 1.0
+ * @date 2020/09/15 21:47 pm
+ */
 @Configuration
 public class Swagger {
 

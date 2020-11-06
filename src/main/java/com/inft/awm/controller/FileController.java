@@ -17,7 +17,13 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
-
+/**
+ * Receive request about upload
+ *
+ * @author Yao Shi
+ * @version 1.0
+ * @date 30/10/2020 11:47 pm
+ */
 @RestController
 @RequestMapping("/awm_server/file")
 @Api(tags = "Interfaces for files")

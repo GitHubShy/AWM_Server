@@ -3,7 +3,13 @@ package com.inft.awm.domain;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-
+/**
+ * mapping of SubTask table
+ *
+ * @author Yao Shi
+ * @version 1.0
+ * @date 30/10/2020 11:47 pm
+ */
 @Entity
 @Table(name = "sub_task")
 public class SubTask {
@@ -14,6 +20,9 @@ public class SubTask {
     @NotNull(message = "The job id cannot be empty")
     private Integer job_id;
 
+    /**
+     * sub_task_type_id
+     */
     @NotNull(message = "The sub_task_type_id cannot be empty")
     private Integer sub_task_type_id;
 

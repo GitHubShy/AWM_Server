@@ -1,6 +1,12 @@
 package com.inft.awm.response;
 
-
+/**
+ * The class to return data as a uniform format
+ *
+ * @author Yao Shi
+ * @version 1.0
+ * @date 2020/09/30 22:47 pm
+ */
 public class Result<T> {
 
     private String message = "Success";

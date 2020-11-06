@@ -4,6 +4,13 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+/**
+ * mapping of aircraft table
+ *
+ * @author Yao Shi
+ * @version 1.0
+ * @date 30/10/2020 11:47 pm
+ */
 @Entity
 @Table
 public class Aircraft {
@@ -18,15 +25,17 @@ public class Aircraft {
     protected String type;
 
     /**
-     * MSN=Manufacturing Serial number 制造序列号，制造商对其所有生产线生产的飞机数量的统计，不区分机型，
-     *    表示该架飞机在厂家所生产全部飞机中的排序号。比如：波音公司制造序列号为38388的飞机，代表波音生产的第38388架飞机。
+     * MSN=Manufacturing Serial number
+     * Manufacturing serial number, manufacturer's statistics of the number of aircraft produced by all its production lines, regardless of aircraft type,
+     * It indicates the sequence number of the aircraft in all the aircraft produced by the manufacturer. For example, Boeing company manufactures the aircraft with serial number 38388, which represents the 38388 aircraft produced by Boeing.
      */
     @NotBlank(message = "The registration cannot be empty")
     protected String registration;
 
     /**
-     * Registration number注册号，此编号由飞机持有国的官方制定，开头的一、两位的字母由国际航空组织给定，代表该航空器注册的国籍。
-     *    一个注册号对应一架飞机，没有重号，必须符合国际民用航空公约的规定，一般在机身尾部和两侧机翼，少数在垂直尾翼。飞机注册号包括国籍标志和登记标志。比如：我国国内一般是B-XXXX(四位数）
+     * Registration number
+     * The registration number, which is formulated by the official of the aircraft holding country, and the first one or two letters are given by the international aviation organization to represent the registered nationality of the aircraft.
+     *  A registration number corresponds to an aircraft, and there is no duplicate number. It must comply with the provisions of the International Civil Aviation Convention. Generally, it is at the tail of the fuselage and the wings on both sides, and a few on the vertical tail. The aircraft registration number includes nationality mark and registration mark. For example: China's domestic general b-xxx (four digit)
      */
     @NotBlank(message = "The serial cannot be empty")
     protected String serial;

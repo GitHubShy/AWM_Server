@@ -1,27 +1,38 @@
 package com.inft.awm.utils;
 
 import java.util.Random;
-
+/**
+ * utils for String
+ *
+ * @author Yao Shi
+ * @version 1.0
+ * @date 30/10/2020 11:47 pm
+ */
 public class StringUtils {
 
+    /** Judge if a String is null
+     * @param text
+     * @return
+     */
     public static boolean isEmpty(String text) {
         return text == null || "".equals(text);
     }
 
+    /**Get a random string
+     * @param length
+     * @return
+     */
     public static String randomStrings(int length) {
-        //定义一个字符串（A-Z，a-z，0-9）即62位；
+        //define（A-Z，a-z，0-9）；
         String str = "zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890";
-        //由Random生成随机数
+        //Random generate
         Random random = new Random();
         StringBuffer sb = new StringBuffer();
-        //长度为几就循环几次
+
         for (int i = 0; i < length; ++i) {
-            //产生0-61的数字
             int number = random.nextInt(62);
-            //将产生的数字通过length次承载到sb中
             sb.append(str.charAt(number));
         }
-        //将承载的字符转换成字符串
         return sb.toString();
     }
 }

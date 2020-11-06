@@ -1,7 +1,13 @@
 package com.inft.awm.domain;
 
 import javax.persistence.*;
-
+/**
+ * mapping of Receipt table
+ *
+ * @author Yao Shi
+ * @version 1.0
+ * @date 30/10/2020 11:47 pm
+ */
 @Table
 @Entity
 public class Receipt {
@@ -14,12 +20,24 @@ public class Receipt {
 
     private Integer customer_id;
 
+    /**
+     * Delivery time
+     */
     private String delivery_time;
 
+    /**
+     * Receipt creating time
+     */
     private String create_time;
 
+    /**
+     * Total price
+     */
     private Double price;
 
+    /**
+     * receipt number: time stamp + job id
+     */
     private String crn;
 
     public Receipt() {

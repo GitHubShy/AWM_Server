@@ -6,7 +6,13 @@ import com.inft.awm.domain.Employee;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
-
+/**
+ * Employee CRUD
+ *
+ * @author Yao Shi
+ * @version 1.0
+ * @date 30/10/2020 11:47 pm
+ */
 public interface EmployeeRepository extends CrudRepository<Employee,Integer> {
 
     @Query(value = "select * from employee where account_name = ?1",nativeQuery = true)

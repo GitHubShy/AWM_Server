@@ -14,7 +14,13 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
+/**
+ * Handle customer business logic
+ *
+ * @author Yao Shi
+ * @version 1.0
+ * @date 30/10/2020 11:47 pm
+ */
 @Service
 public class CustomerService {
 
@@ -24,6 +30,9 @@ public class CustomerService {
     @Autowired
     ReceiptRepository receiptRepository;
 
+    /**Register a new customer
+     * @param customer
+     */
     public void register(Customer customer) {
         Customer existCustomer = customerRepository.findByUserName(customer.getAccount_name());
 
@@ -34,6 +43,11 @@ public class CustomerService {
         customerRepository.save(customer);
     }
 
+    /**Customer Login
+     * @param account_name
+     * @param password
+     * @return
+     */
     public ResponseCustomerLogin login(String account_name,String password) {
 
         Customer existCustomer = customerRepository.findByUserName(account_name);
@@ -50,11 +64,18 @@ public class CustomerService {
         }
     }
 
+    /**Get all Customer
+     * @return
+     */
     public Iterable<Customer> getAllCustomers() {
         Iterable<Customer> allCustomers = customerRepository.findAll();
         return allCustomers;
     }
 
+    /**Find a customer by id
+     * @param customerId
+     * @return
+     */
     public Customer findCustomerById(Integer customerId) {
         return customerRepository.findByCustomerId(customerId);
     }

@@ -1,22 +1,27 @@
 file-save-path: /usr/awmImages/
 #file-save-path: D:/images/
 server:
-  port: 8080
+  port: 8082
 
 spring:
   datasource:
-    name: test
-    url: jdbc:mysql://47.104.167.88:3306/test?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8
+    name: awm
+    url: jdbc:mysql://47.104.167.88:3306/awm?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8
     username: root
     password: 12345678
     driver-class-name: com.mysql.jdbc.Driver
+#    name: awm
+#    url: jdbc:mysql://47.74.88.228:3306/awm?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8
+#    username: root
+#    password: 12345678
+#    driver-class-name: com.mysql.jdbc.Driver
 
   mail:
-    host: smtp.qq.com #发送邮件服务器
-    username: 147573224@qq.com #发送邮件的邮箱地址
-    password:  kklesabksidkbidj #客户端授权码，不是邮箱密码，这个在qq邮箱设置里面自动生成的
-    properties.mail.smtp.port: 465 #端口号465或587
-    from: 147573224@qq.com # 发送邮件的地址，和上面username一致可以任意
+    host: smtp.qq.com # mail server
+    username: 147573224@qq.com # email address
+    password:  kklesabksidkbidj #Authorization code
+    properties.mail.smtp.port: 465 # port 465 or 587
+    from: 147573224@qq.com # email address
     properties.mail.smtp.starttls.enable: true
     properties.mail.smtp.starttls.required: true
     properties.mail.smtp.ssl.enable: true

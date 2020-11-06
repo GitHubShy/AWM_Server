@@ -5,7 +5,13 @@ import com.inft.awm.domain.Template;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
-
+/**
+ * Template CRUD
+ *
+ * @author Yao Shi
+ * @version 1.0
+ * @date 30/10/2020 11:47 pm
+ */
 public interface TemplateRepository extends CrudRepository<Template,Integer> {
 
     @Query(value = "select * from template where employee_id = 1 or employee_id = ?1",nativeQuery = true)

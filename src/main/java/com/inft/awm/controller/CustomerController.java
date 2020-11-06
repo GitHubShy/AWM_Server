@@ -14,6 +14,13 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+/**
+ * Receive request about customer
+ *
+ * @author Yao Shi
+ * @version 1.0
+ * @date 30/10/2020 11:47 pm
+ */
 @RestController
 @RequestMapping("/awm_server/customer")
 @Api(tags = "Interfaces For Customer")

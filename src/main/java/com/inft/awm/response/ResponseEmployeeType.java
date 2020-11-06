@@ -1,5 +1,11 @@
 package com.inft.awm.response;
-
+/**
+ * Response class for different employee type
+ *
+ * @author Yao Shi
+ * @version 1.0
+ * @date 2020/10/15 14:33 pm
+ */
 public class ResponseEmployeeType {
     private Integer id;
     private String name;

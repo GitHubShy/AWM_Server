@@ -18,7 +18,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.nio.charset.Charset;
 import java.util.Random;
-
+/**
+ * Receive request about notification
+ *
+ * @author Yao Shi
+ * @version 1.0
+ * @date 30/10/2020 11:47 pm
+ */
 @RestController
 @RequestMapping("/awm_server/notification")
 @Api(tags = "Interfaces For Customer")

@@ -1,5 +1,11 @@
 package com.inft.awm.domain.request;
-
+/**
+ * A class used for saving parameters for a api interface to request getting a employee
+ *
+ * @author Yao Shi
+ * @version 1.0
+ * @date 30/10/2020 11:47 pm
+ */
 public class RequestGetEmployee {
     private String id;
 

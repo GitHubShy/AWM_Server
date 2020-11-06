@@ -2,7 +2,13 @@ package com.inft.awm.response;
 
 
 import com.inft.awm.domain.Customer;
-
+/**
+ * A class used for responsing login request
+ *
+ * @author Yao Shi
+ * @version 1.0
+ * @date 2020/10/30 11:47 pm
+ */
 public class ResponseCustomerLogin {
 
     private String token;
