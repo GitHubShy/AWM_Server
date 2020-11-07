@@ -62,6 +62,10 @@ public class WorkshopService {
     public Aircraft registerAircraft(Aircraft aircraft) {
         String nextTime = TimeUtils.addDateHours(aircraft.getLast_modify_time(), aircraft.getMaintenance_cycle(), "yyyy-MM-dd");
         aircraft.setNext_modify_time(nextTime);
+        //IF the pic of aircraft is null, give a default one
+        if (StringUtils.isEmpty(aircraft.getAircraft_pic())) {
+            aircraft.setAircraft_pic("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1604768062920&di=7dcc6330950d70a4ba61e69b2b72d796&imgtype=0&src=http%3A%2F%2Fbpic.588ku.com%2Felement_origin_min_pic%2F01%2F42%2F06%2F63573d65ddbc451.jpg");
+        }
         Aircraft saved = aircraftRepository.save(aircraft);
         return saved;
     }

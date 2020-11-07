@@ -1,6 +1,5 @@
 package com.inft.awm.interceptor;
 
-
 import com.inft.awm.response.Result;
 import org.mybatis.logging.Logger;
 import org.mybatis.logging.LoggerFactory;
@@ -21,25 +20,11 @@ import java.util.Set;
  */
 @RestControllerAdvice
 public class ExceptionInterceptor {
-    private static final Logger LOG = LoggerFactory.getLogger(ExceptionInterceptor.class);
 
+    private static final Logger LOG = LoggerFactory.getLogger(ExceptionInterceptor.class);
 
     @ExceptionHandler
     public Result handleException(HttpServletRequest request, HttpServletResponse response, final Exception e) {
-//        LOG.error(e.getMessage(), e);
-//        if (e instanceof AlertException) {//可以在前端Alert的异常
-//            if (((AlertException) e).getRetCode() != null) {//预定义异常
-//                return new Result(((AlertException) e).getRetCode());
-//            } else {
-//                return new Result(1, e.getMessage() != null ? e.getMessage() : "");
-//            }
-//        } else {//其它异常
-//            if (Util.isProduct()) {//如果是正式环境，统一提示
-//                return new Result(RetCode.ERROR);
-//            } else {//测试环境，alert异常信息
-//                return new Result(1, StringUtils.isNotBlank(e.getMessage()) ? e.getMessage() : e.toString());
-//            }
-//        }
         if (e instanceof ConstraintViolationException) {//ConstraintViolationException
             //cast exception
             ConstraintViolationException exception = (ConstraintViolationException) e;
