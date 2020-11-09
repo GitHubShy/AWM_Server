@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 /**
- * Receive request about aircraft and job
+ * Receive request about aircraft and job,task,comment
  *
  * @author Yao Shi
  * @version 1.0
@@ -29,29 +29,55 @@ public class WorkshopController {
     @Autowired
     private WorkshopService workshopService;
 
+    /** Get all aircraft
+     * @param httpServletRequest
+     * @param id
+     * @return
+     */
     @PostMapping(value = "/getAircraft")
     @NeedToken
     public List<ResponseAircraft> getAllAircraft(HttpServletRequest httpServletRequest,Integer id) {
         return workshopService.getAircraft(id);
     }
 
+    /**getCustomerAircraft
+     * @param httpServletRequest
+     * @param id
+     * @return
+     */
     @PostMapping(value = "/getCustomerAircraft")
     public List<ResponseAircraft> getCustomerAircraft(HttpServletRequest httpServletRequest,Integer id) {
         return workshopService.getCustomerAircraft(id);
     }
 
+    /**registerAircraft
+     * @param httpServletRequest
+     * @param aircraft
+     * @return
+     */
     @PostMapping(value = "/registerAircraft")
     public Aircraft registerAircraft(HttpServletRequest httpServletRequest, @RequestBody Aircraft aircraft) {
         Aircraft registerAircraft = workshopService.registerAircraft(aircraft);
         return registerAircraft;
     }
 
+    /**registerComponents
+     * @param httpServletRequest
+     * @param components
+     * @return
+     */
     @PostMapping(value = "/registerComponents")
     public SimpleResult registerComponents(HttpServletRequest httpServletRequest, @RequestBody List<Component> components) {
         workshopService.registerComponents(components);
         return new SimpleResult("Success");
     }
 
+    /**getAllJobs
+     * @param httpServletRequest
+     * @param id
+     * @param status
+     * @return
+     */
     @PostMapping(value = "/getAllJobs")
     @NeedToken
     public List<Job> getAllJobs(HttpServletRequest httpServletRequest, int id,Integer status) {
@@ -59,12 +85,21 @@ public class WorkshopController {
         return allJobs;
     }
 
+    /**Get a job by id
+     * @param id
+     * @return
+     */
     @PostMapping(value = "/getJob")
     @NeedToken
     public Job getJob(int id) {
         return workshopService.getJob(id);
     }
 
+    /**Get all sub tasks by a job
+     * @param httpServletRequest
+     * @param id
+     * @return
+     */
     @PostMapping(value = "/getAllSubTasks")
     @NeedToken
     public List<SubTask> getAllSubTasks(HttpServletRequest httpServletRequest, int id) {
@@ -72,6 +107,11 @@ public class WorkshopController {
         return subTasksForJob;
     }
 
+    /** Get tasks for a employee
+     * @param httpServletRequest
+     * @param employeeId
+     * @return
+     */
     @PostMapping(value = "/getTasksForEmployee")
     @NeedToken
     public List<SubTask> getTasksForEmployee(HttpServletRequest httpServletRequest, int employeeId) {
@@ -79,6 +119,9 @@ public class WorkshopController {
         return subTasksForJob;
     }
 
+    /**Get all sub task type
+     * @return
+     */
     @PostMapping(value = "/getAllSubTaskType")
     @NeedToken
     public List<SubTaskType> getAllSubTaskType() {
@@ -86,6 +129,10 @@ public class WorkshopController {
         return subTasksForJob;
     }
 
+    /**Update sub task
+     * @param subTask
+     * @return
+     */
     @PostMapping(value = "/updateSubTask")
     @NeedToken
     public SimpleResult updateSubTask(@RequestBody SubTask subTask) {
@@ -93,6 +140,10 @@ public class WorkshopController {
         return new SimpleResult("Success");
     }
 
+    /** Update a job
+     * @param job
+     * @return
+     */
     @PostMapping(value = "/updateJob")
     @NeedToken
     public SimpleResult updateJob(@RequestBody Job job) {
@@ -100,6 +151,11 @@ public class WorkshopController {
         return new SimpleResult("Success");
     }
 
+    /** Create a job
+     * @param httpServletRequest
+     * @param job
+     * @return
+     */
     @PostMapping(value = "/createJob")
     @NeedToken
     public SimpleResult createJob(HttpServletRequest httpServletRequest, @RequestBody Job job) {
@@ -107,6 +163,11 @@ public class WorkshopController {
         return new SimpleResult("Success");
     }
 
+    /** Create a sub task
+     * @param httpServletRequest
+     * @param subTask
+     * @return
+     */
     @PostMapping(value = "/createSubTask")
     @NeedToken
     public SimpleResult createSubTask(HttpServletRequest httpServletRequest, @RequestBody SubTask subTask) {
@@ -114,6 +175,10 @@ public class WorkshopController {
         return new SimpleResult("Success");
     }
 
+    /** Crate a new template
+     * @param template
+     * @return
+     */
     @PostMapping(value = "/createNewTemplate")
     @NeedToken
     public SimpleResult createNewTemplate(@RequestBody RequestCreateTemplate template) {
@@ -121,6 +186,10 @@ public class WorkshopController {
         return new SimpleResult("Success");
     }
 
+    /**Delete a sub task
+     * @param id
+     * @return
+     */
     @PostMapping(value = "/deleteSubTask")
     @NeedToken
     public SimpleResult deleteSubTask(Integer id) {
@@ -129,6 +198,10 @@ public class WorkshopController {
     }
 
 
+    /** Find available templates for current login employee
+     * @param httpServletRequest
+     * @return
+     */
     @PostMapping(value = "/findAvailableTemplates")
     @NeedToken
     public List<Template> findAvailableTemplates(HttpServletRequest httpServletRequest) {
@@ -137,6 +210,10 @@ public class WorkshopController {
         return availableTemplates;
     }
 
+    /** Get comments
+     * @param job_id
+     * @return
+     */
     @PostMapping(value = "/getComments")
     @NeedToken
     public List<Comment> getComments(Integer job_id) {
@@ -144,6 +221,11 @@ public class WorkshopController {
         return comments;
     }
 
+    /**Create a new comment
+     * @param httpServletRequest
+     * @param comment
+     * @return
+     */
     @PostMapping(value = "/createComment")
     @NeedToken
     public SimpleResult createComment(HttpServletRequest httpServletRequest,@RequestBody Comment comment) {
@@ -151,6 +233,10 @@ public class WorkshopController {
         return new SimpleResult("Success");
     }
 
+    /** update a aircraft
+     * @param aircraft
+     * @return
+     */
     @PostMapping(value = "/updateAircraft")
     @NeedToken
     public SimpleResult updateAircraft(@RequestBody Aircraft aircraft) {

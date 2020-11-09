@@ -23,4 +23,7 @@ public interface JobRepository extends CrudRepository<Job,Integer> {
     @Query(value = "select * from job where  status = ifnull(?1,status) order by id DESC",nativeQuery = true)
     Iterable<Job> findAllDesc(@Param("status") Integer status);
 
+    @Query(value = "select * from job where aircraft_id = ?1",nativeQuery = true)
+    Iterable<Job> findJobByAircraft(@Param("id") Integer id);
+
 }

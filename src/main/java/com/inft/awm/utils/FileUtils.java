@@ -31,6 +31,8 @@ public class FileUtils {
         }
 
         String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
+
+        //Generate unique file name
         String newFileName= UUID.randomUUID().toString().replaceAll("-", "")+suffix;
 
         File newFile = new File(fileDir + newFileName);

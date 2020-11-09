@@ -7,9 +7,16 @@ import com.inft.awm.domain.Employee;
 
 import java.util.Date;
 
-
+/**
+ * Utils for generate AWT TOKEN
+ *
+ * @author Yao Shi
+ * @version 1.0
+ * @date 30/10/2020 11:47 pm
+ */
 public class TokenUtils {
 
+    //Create Customer JWT token
     public static String createCustomerToken(Customer customer) {
         String token = "";
         token = JWT.create()
@@ -21,6 +28,7 @@ public class TokenUtils {
         return token;
     }
 
+    //Create Employee JWT Token
     public static String createEmployeeToken(Employee employee) {
         String token = "";
         token = JWT.create()

@@ -21,7 +21,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 /**
- * Handle customer employee logic
+ * Handle employee logic
  *
  * @author Yao Shi
  * @version 1.0
@@ -142,36 +142,47 @@ public class EmployeeService {
         if (employeeRepository.findByEmployeeName(employee.getAccount_name()) != null && employeeRepository.findByEmployeeName(employee.getAccount_name()).getId() != employee.getId()) {
             throw new RuntimeException("This account name already exists");
         }
+        //Update account name
         if (!StringUtils.isEmpty(employee.getAccount_name())) {
             originalEmployee.setAccount_name(employee.getAccount_name());
         }
+        //update firstname
         if (!StringUtils.isEmpty(employee.getFirst_name())) {
             originalEmployee.setFirst_name(employee.getFirst_name());
         }
+        //update surname
         if (!StringUtils.isEmpty(employee.getSurname())) {
             originalEmployee.setSurname(employee.getSurname());
         }
+        //update password
         if (!StringUtils.isEmpty(employee.getPassword())) {
             originalEmployee.setPassword(employee.getPassword());
         }
+        //update TFN
         if (!StringUtils.isEmpty(employee.getTax_file_number())) {
             originalEmployee.setTax_file_number(employee.getTax_file_number());
         }
+        //update employee
         if (!StringUtils.isEmpty(employee.getEmail())) {
             originalEmployee.setEmail(employee.getEmail());
         }
+        //update phone number
         if (!StringUtils.isEmpty(employee.getPhone())) {
             originalEmployee.setPhone(employee.getPhone());
         }
+        //update title
         if (employee.getTitle() != null) {
             originalEmployee.setTitle(employee.getTitle());
         }
+        //update payment rate
         if (employee.getPayment_rate() != null) {
             originalEmployee.setPayment_rate(employee.getPayment_rate() );
         }
+        //update birth
         if (employee.getBirth_year() != null) {
             originalEmployee.setBirth_year(employee.getBirth_year());
         }
+        //update gender
         if (employee.getGender() != null) {
             originalEmployee.setGender(employee.getGender());
         }

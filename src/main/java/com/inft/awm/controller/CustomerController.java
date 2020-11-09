@@ -19,7 +19,7 @@ import java.util.List;
  *
  * @author Yao Shi
  * @version 1.0
- * @date 30/10/2020 11:47 pm
+ * @date 30/10/2020 16:41 pm
  */
 @RestController
 @RequestMapping("/awm_server/customer")
@@ -29,11 +29,18 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
 
+    /**Get all customer
+     * @return
+     */
     @PostMapping(value = "/getAllCustomers")
     public Iterable<Customer> getAllCustomer() {
         return customerService.getAllCustomers();
     }
 
+    /**Register a new customer
+     * @param customer
+     * @return
+     */
     @PostMapping(value = "/register")
     @ApiOperation(value = "Register a customer", notes = "")
     @ApiResponses({
@@ -45,6 +52,11 @@ public class CustomerController {
         return new SimpleResult("Success");
     }
 
+    /**Customer login
+     * @param account_name
+     * @param password
+     * @return
+     */
     @PostMapping(value = "/login")
     @ApiOperation(value = "Customer login", notes = "")
     @ApiImplicitParams({
@@ -58,6 +70,11 @@ public class CustomerController {
     public ResponseCustomerLogin login(String account_name, String password) {
         return customerService.login(account_name,password);
     }
+
+    /**Get a customer by id
+     * @param id
+     * @return
+     */
     @PostMapping(value = "/getCustomer")
     @NeedToken
     public Customer getCustomer(Integer id) {

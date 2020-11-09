@@ -10,10 +10,15 @@ import java.util.List;
  * @date 30/10/2020 10:47 pm
  */
 public class ResponseMonthlySalary {
+    //month
     private String date;
+    //total worked hours in this month
     private double work_hours;
+    //total salary in this month
     private double salary;
+    //payment rate
     private Float payment_rate;
+    //Each day salary
     private List<ResponseDailySalary> daily_salary;
 
     public ResponseMonthlySalary(String date, double work_hours, double salary, Float payment_rate, List<ResponseDailySalary> daily_salary) {

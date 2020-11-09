@@ -22,7 +22,7 @@ import java.util.Optional;
  *
  * @author Yao Shi
  * @version 1.0
- * @date 30/10/2020 11:47 pm
+ * @date 30/10/2020 16:55 pm
  */
 @RestController
 @RequestMapping("/awm_server/employee")
@@ -42,6 +42,10 @@ public class EmployeeController {
         return employeeService.getAllEmployees();
     }
 
+    /** Register a new staff
+     * @param employee
+     * @return
+     */
     @PostMapping(value = "/register")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType="body",name="account_name",required=true),
@@ -66,6 +70,10 @@ public class EmployeeController {
         return newEmployee;
     }
 
+    /**Employee login
+     * @param rl
+     * @return
+     */
     @PostMapping(value = "/login")
     @ApiOperation(value = "Employee login", notes = "")
     @ApiResponses({

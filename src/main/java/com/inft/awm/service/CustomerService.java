@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 /**
- * Handle customer business logic
+ * Handle business logic
  *
  * @author Yao Shi
  * @version 1.0
@@ -80,6 +80,10 @@ public class CustomerService {
         return customerRepository.findByCustomerId(customerId);
     }
 
+    /**get all receipts for a customer
+     * @param customerId
+     * @return receipt list
+     */
     public List<Receipt> getReceipts(Integer customerId) {
         if (customerId == null) {
             throw new RuntimeException("The customer id is null");

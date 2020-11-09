@@ -12,7 +12,7 @@ import org.springframework.data.repository.query.Param;
  *
  * @author Yao Shi
  * @version 1.0
- * @date 30/10/2020 11:47 pm
+ * @date 10/10/2020 12:01 pm
  */
 public interface ComponentRepository extends CrudRepository<Component,Integer> {
 

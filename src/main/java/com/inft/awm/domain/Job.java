@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
  *
  * @author Yao Shi
  * @version 1.0
- * @date 30/10/2020 11:47 pm
+ * @date 30/10/2020 12:20 pm
  */
 @Entity
 @Table
@@ -32,6 +32,9 @@ public class Job {
     @NotBlank(message = "The start_time cannot be empty")
     private String start_time;
 
+    /**
+     * due time
+     */
     @NotBlank(message = "The due_time cannot be empty")
     private String due_time;
 

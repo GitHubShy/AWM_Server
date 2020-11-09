@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
  *
  * @author Yao Shi
  * @version 1.0
- * @date 30/10/2020 11:47 pm
+ * @date 30/10/2020 11:59 pm
  */
 @Entity
 @Table(name = "sub_task")
@@ -26,6 +26,9 @@ public class SubTask {
     @NotNull(message = "The sub_task_type_id cannot be empty")
     private Integer sub_task_type_id;
 
+    /**
+     * start time
+     */
     @NotBlank(message = "The start_time cannot be empty")
     private String start_time;
 

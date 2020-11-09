@@ -5,16 +5,16 @@ server:
 
 spring:
   datasource:
-    name: awm
-    url: jdbc:mysql://47.104.167.88:3306/awm?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8
-    username: root
-    password: 12345678
-    driver-class-name: com.mysql.jdbc.Driver
-#    name: awm
-#    url: jdbc:mysql://47.74.88.228:3306/awm?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8
+#    name: awm #China server
+#    url: jdbc:mysql://47.104.167.88:3306/awm?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8
 #    username: root
 #    password: 12345678
 #    driver-class-name: com.mysql.jdbc.Driver
+    name: awm #Sydney server
+    url: jdbc:mysql://47.74.88.228:3306/awm?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8
+    username: root
+    password: 12345678
+    driver-class-name: com.mysql.jdbc.Driver
 
   mail:
     host: smtp.qq.com # mail server

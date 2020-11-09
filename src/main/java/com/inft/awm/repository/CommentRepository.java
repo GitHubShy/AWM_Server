@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
  *
  * @author Yao Shi
  * @version 1.0
- * @date 30/10/2020 11:47 pm
+ * @date 06/10/2020 09:47 pm
  */
 public interface CommentRepository extends CrudRepository<Comment,Integer> {
 

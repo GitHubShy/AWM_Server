@@ -23,7 +23,7 @@ import java.util.Random;
  *
  * @author Yao Shi
  * @version 1.0
- * @date 30/10/2020 11:47 pm
+ * @date 30/10/2020 15:44 pm
  */
 @RestController
 @RequestMapping("/awm_server/notification")
@@ -44,12 +44,18 @@ public class NotificationController {
     private MailServiceImp mailServiceImp;
 
 
+    /**Reset pasword
+     * @param account_name
+     * @param type
+     * @return
+     */
     @PostMapping(value = "/resetPassword")
     public SimpleResult resetPassword(String account_name, Integer type) {
         String email;
         String subject = "Reset Password";
+        //Generate a new password
         String newPassword = StringUtils.randomStrings(8);
-        if (type == 0) {
+        if (type == 0) {//Employee
             final Employee employee = employeeRepository.findByEmployeeName(account_name);
             if (employee == null) {
                 throw new RuntimeException("This employee does not exist");
@@ -58,7 +64,7 @@ public class NotificationController {
                 employeeRepository.save(employee);
                 email = employee.getEmail();
             }
-        } else {
+        } else {//Customer
             final Customer customer = customerRepository.findByUserName(account_name);
             if (customer == null) {
                 throw new RuntimeException("This account does not exist");
@@ -68,12 +74,13 @@ public class NotificationController {
                 email = customer.getEmail();
             }
         }
+        //Sending reset password to the login people
         String content = "Your new password is  " + newPassword + "  Please log in by this new password and go to profile to set a new password";
         mailServiceImp.sendSimpleMail(email, subject, content);
         return new SimpleResult("A email has been sent to your register email,please follow the instruction to reset your password");
     }
 
-    /**
+    /** Send a message to employee or customer email
      * @param receiverType 0=customer, 1=staff
      * @param receiverName
      * @param subject

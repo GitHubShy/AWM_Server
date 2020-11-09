@@ -11,7 +11,7 @@ import org.springframework.data.repository.query.Param;
  *
  * @author Yao Shi
  * @version 1.0
- * @date 30/10/2020 11:47 pm
+ * @date 30/10/2020 13:55 pm
  */
 public interface ReceiptRepository extends CrudRepository<Receipt,Integer> {
 

@@ -4,7 +4,7 @@ package com.inft.awm.domain.request;
  *
  * @author Yao Shi
  * @version 1.0
- * @date 30/10/2020 11:47 pm
+ * @date 30/10/2020 13:33 pm
  */
 public class RequestDeleteEmployee {
     private Integer id;

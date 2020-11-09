@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
  *
  * @author Yao Shi
  * @version 1.0
- * @date 30/10/2020 11:47 pm
+ * @date 30/10/2020 12:50 pm
  */
 @Entity
 @Table

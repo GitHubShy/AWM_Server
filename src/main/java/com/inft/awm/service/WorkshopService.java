@@ -15,7 +15,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 /**
- * Handle customer workshop logic
+ * Handle  workshop logic(Aircraft, job, task, sub task, comment, receipt)
  *
  * @author Yao Shi
  * @version 1.0
@@ -68,6 +68,19 @@ public class WorkshopService {
         }
         Aircraft saved = aircraftRepository.save(aircraft);
         return saved;
+    }
+
+    /** Remove a aircraft
+     * @param id The aircraft id
+     * @return
+     */
+    public void removeAircraft(Integer id) {
+      //Delete all jobs and sub tasks for this job
+        Iterable<Job> jobByAircraft = jobRepository.findJobByAircraft(id);
+        Iterator<Job> iterator = jobByAircraft.iterator();
+        while (iterator.hasNext()) {
+            Job job = iterator.next();
+        }
     }
 
     /** Register a component for a aircraft
