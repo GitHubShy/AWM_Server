@@ -7,5 +7,5 @@ AWM Server
 #Spring JDK:
 14
 #port:
-8080
+8082
 

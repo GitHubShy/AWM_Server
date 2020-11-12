@@ -8,6 +8,7 @@ import com.inft.awm.repository.ReceiptRepository;
 import com.inft.awm.response.ResponseCustomerLogin;
 import com.inft.awm.response.ResponseLogin;
 import com.inft.awm.token.TokenUtils;
+import com.inft.awm.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +39,10 @@ public class CustomerService {
 
         if (existCustomer != null) {
             throw new RuntimeException("The customer name has already been exist");
+        }
+
+        if (StringUtils.isEmpty(customer.getPortrait_url())) {
+            customer.setPortrait_url("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1602311307224&di=1ac5d67a99034e9078781ba583bd4de7&imgtype=0&src=http%3A%2F%2Fwww.51yuansu.com%2Fpic2%2Fcover%2F00%2F39%2F51%2F5812ec5184228_610.jpg");
         }
 
         customerRepository.save(customer);
