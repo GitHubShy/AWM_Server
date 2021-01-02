@@ -13,13 +13,13 @@ spring:
     name: awm #Sydney server
     url: jdbc:mysql://47.74.88.228:3306/awm?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8
     username: root
-    password: 12345678
+    password: 123qwe
     driver-class-name: com.mysql.jdbc.Driver
 
   mail:
     host: smtp.qq.com # mail server
     username: 147573224@qq.com # email address
-    password:  kklesabksidkbidj #Authorization code
+    password:  kkkkkk #Authorization code
     properties.mail.smtp.port: 465 # port 465 or 587
     from: 147573224@qq.com # email address
     properties.mail.smtp.starttls.enable: true
